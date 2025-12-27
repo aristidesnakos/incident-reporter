@@ -2,6 +2,7 @@
 ## Digital Foreman MVP - No-Code Implementation
 
 ### Pre-Development Setup (30 minutes)
+**📖 Consult TECHNICAL_SPEC.md for detailed infrastructure requirements**
 - [ ] Telegram bot token obtained from @BotFather (5 min)
 - [ ] Terraform infrastructure template deployed (15 min)
 - [ ] n8n instance accessible and configured (5 min) 
