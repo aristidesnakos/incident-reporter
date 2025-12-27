@@ -11,6 +11,7 @@
 - [ ] Gmail API credentials configured for email alerts (optional) (2 min)
 
 ### Sprint 1 Checklist: Conversational Voice Pipeline
+**📖 Consult TECHNICAL_SPEC.md for n8n workflow specifications and AI prompt templates**
 
 #### Voice Input Processing (4 hours)
 - [ ] n8n Telegram webhook trigger configured
