@@ -72,4 +72,30 @@ Telegram Bot → n8n Webhook → n8n Workflows → Vertex AI → Firestore → A
 - Airtable base design for dashboard views
 - Terraform infrastructure updates as needed
 
+## Documentation Discipline
+
+**CRITICAL**: Claude Code must consult and update these documents during development:
+
+### Before Starting Any Task:
+1. **Read SPRINT_PLAN.md** - Understand current sprint goals and timeline
+2. **Read TECHNICAL_SPEC.md** - Review architecture and integration requirements  
+3. **Read DEVELOPMENT_CHECKLIST.md** - Check off completed tasks, update status
+
+### During Development:
+- **Update DEVELOPMENT_CHECKLIST.md** immediately after completing each task
+- **Reference TEAM_RESPONSIBILITIES.md** to understand role boundaries
+- **Check RISK_REGISTER.md** if encountering blockers
+
+### After Completing Major Milestones:
+- **Update SPRINT_PLAN.md** if timeline or approach changes
+- **Update TECHNICAL_SPEC.md** if architecture evolves
+- **Update PRD.md** if requirements shift
+
+### Documentation Commands:
+- `read SPRINT_PLAN.md` before starting new work
+- `edit DEVELOPMENT_CHECKLIST.md` to mark tasks complete
+- `read TECHNICAL_SPEC.md` when implementing integrations
+
+**Failure to consult docs = incomplete implementation**
+
 Refer to TECHNICAL_SPEC.md for detailed n8n node configurations and workflow specifications.
