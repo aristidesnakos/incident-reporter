@@ -8,7 +8,7 @@
 - [ ] Sprint coordination and progress tracking
 - [ ] Scope protection - ensure no-code approach maintained
 - [ ] Demo preparation and pitch deck
-- [ ] External service coordination (Telegram, Twilio, Airtable)
+- [ ] External service coordination (Telegram, ElevenLabs, Gmail, Airtable)
 - [ ] Template documentation for reusability
 - [ ] Final go/no-go decisions for demo
 
@@ -52,28 +52,30 @@
 ---
 
 ### Workflow Engineer (formerly Backend + AI Engineer)
-**Primary Focus**: n8n visual workflow development, AI integration nodes
+**Primary Focus**: n8n conversational AI workflow development, voice integration nodes
 
 **Key Responsibilities**:
-- [ ] Main voice processing workflow creation in n8n
-- [ ] Telegram webhook and response node configuration
-- [ ] Vertex AI HTTP node integration
+- [ ] Conversational voice processing workflow creation in n8n
+- [ ] Telegram webhook and voice response node configuration
+- [ ] Vertex AI Gemini conversational prompt integration
+- [ ] ElevenLabs text-to-speech HTTP node setup
 - [ ] Firestore read/write node setup
-- [ ] Twilio SMS node configuration
-- [ ] Follow-up automation workflow
-- [ ] Error handling nodes and logging
+- [ ] Gmail email alert node configuration
+- [ ] Follow-up automation workflow with voice responses
+- [ ] Error handling nodes and conversational flow logging
 
 **Technical Ownership**:
-- All n8n workflows and node configurations
-- AI prompt engineering within n8n HTTP nodes
-- Workflow error handling and monitoring
-- Voice processing pipeline optimization
+- All n8n conversational workflows and node configurations
+- AI conversation design and prompt engineering within n8n HTTP nodes
+- ElevenLabs voice synthesis integration and personality tuning
+- Workflow error handling and conversation monitoring
+- Voice processing pipeline optimization for natural interactions
 
 **Daily Tasks**:
-- Visual workflow development in n8n editor
-- Node configuration and testing
-- AI prompt refinement
-- Workflow performance optimization
+- Visual conversational workflow development in n8n editor
+- Voice synthesis node configuration and testing
+- AI conversation prompt refinement and personality development
+- Workflow performance optimization for sub-3-second responses
 
 ---
 
@@ -81,12 +83,12 @@
 **Primary Focus**: Airtable base design, data sync workflows, mobile optimization
 
 **Key Responsibilities**:
-- [ ] Airtable base setup with incident tracking views
-- [ ] n8n → Airtable sync workflow development
-- [ ] View configuration for urgency filtering
-- [ ] Mobile app experience optimization
-- [ ] CSV export workflow setup
-- [ ] Real-time data sync monitoring
+- [ ] Airtable base setup with incident tracking and conversation transcript views
+- [ ] n8n → Airtable sync workflow development for conversational data
+- [ ] View configuration for urgency filtering and voice interaction history
+- [ ] Mobile app experience optimization for conversation playback
+- [ ] CSV export workflow setup including voice transcripts
+- [ ] Real-time data sync monitoring for conversational incidents
 
 **Technical Ownership**:
 - Airtable base architecture and views
@@ -145,16 +147,16 @@
 
 #### Testing Responsibilities
 - **Infrastructure Engineer**: Infrastructure deployment testing, scalability
-- **Workflow Engineer**: n8n workflow testing, AI response validation  
-- **Dashboard Engineer**: Airtable sync testing, mobile compatibility
-- **Template Architect**: End-to-end integration testing, template validation
+- **Workflow Engineer**: n8n conversational workflow testing, ElevenLabs voice quality validation, Gemini conversation accuracy  
+- **Dashboard Engineer**: Airtable sync testing, mobile compatibility, conversation transcript display
+- **Template Architect**: End-to-end conversational integration testing, template validation
 
 #### Demo Preparation (All Team Members)
-- **Product Manager**: Script, timing, and narrative
+- **Product Manager**: Script, timing, and conversational demo narrative
 - **Infrastructure Engineer**: System monitoring and backup infrastructure
-- **Workflow Engineer**: Test data seeding and workflow reliability
-- **Dashboard Engineer**: Airtable view optimization and mobile testing
-- **Template Architect**: Backup plans and troubleshooting guides
+- **Workflow Engineer**: Test conversation data seeding, workflow reliability, voice quality optimization
+- **Dashboard Engineer**: Airtable view optimization and mobile testing for conversation display
+- **Template Architect**: Backup plans and troubleshooting guides for voice integration
 
 ### Decision Making Process (Accelerated for 24-hour timeline)
 
@@ -184,9 +186,10 @@ Each team member must create reusable templates:
 - **Template Architect**: One-command deployment guide and troubleshooting
 
 ### Reusable Template Goals
-- **5-minute setup**: Future hackathons can deploy infrastructure in under 5 minutes
-- **30-minute customization**: Voice processing workflows adaptable for new use cases
-- **Documented APIs**: Clear integration points for different AI services or databases
-- **Mobile-ready**: Airtable templates work immediately on mobile devices
+- **5-minute setup**: Future hackathons can deploy conversational AI infrastructure in under 5 minutes
+- **30-minute customization**: Conversational voice processing workflows adaptable for new use cases
+- **Documented APIs**: Clear integration points for ElevenLabs, Gemini, and other AI services
+- **Mobile-ready**: Airtable templates work immediately on mobile devices with conversation playback
+- **Voice-first**: Templates optimized for natural conversation flows and voice interactions
 
-This template-first approach ensures rapid deployment for future projects while maintaining the current MVP development speed.
+This template-first approach ensures rapid deployment for future conversational AI projects while maintaining the current MVP development speed.

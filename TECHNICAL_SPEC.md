@@ -3,17 +3,19 @@
 
 ### Architecture Overview
 ```
-Telegram Bot → n8n Webhook → n8n Workflows → Vertex AI → Firestore → Airtable Dashboard
+Telegram Bot → n8n Webhook → Speech-to-Text → Gemini Conversation → ElevenLabs Voice → Firestore → Airtable Dashboard
 ```
 
 ### Technology Stack
 - **Workflow Engine**: n8n (self-hosted on Cloud Run)
 - **Bot Platform**: Telegram Bot API (via n8n Telegram nodes)
-- **AI**: Vertex AI Gemini 1.5 Flash (via n8n HTTP nodes)
+- **AI Conversation**: Vertex AI Gemini 1.5 Flash (via n8n HTTP nodes)
+- **Voice Synthesis**: ElevenLabs API (via n8n HTTP nodes)
+- **Speech Recognition**: Vertex AI Speech-to-Text (via n8n HTTP nodes)
 - **Database**: Firestore (via n8n Google Firestore nodes)
 - **Storage**: Cloud Storage (via n8n Google Cloud Storage nodes)
 - **Dashboard**: Airtable (via n8n Airtable nodes)
-- **Notifications**: Twilio SMS (via n8n Twilio nodes)
+- **Notifications**: Gmail API (via n8n Gmail nodes)
 - **Infrastructure**: Terraform for repeatable deployments
 
 ### Data Models
@@ -25,20 +27,30 @@ Telegram Bot → n8n Webhook → n8n Workflows → Vertex AI → Firestore → A
   "timestamp": "2024-01-15T10:30:00Z",
   "user_id": "telegram_user_id",
   "user_name": "John Smith", 
-  "raw_transcript": "There's a wet floor in zone 3",
-  "audio_file_url": "gs://bucket/audio123.ogg",
+  "conversation": {
+    "initial_transcript": "There's a wet floor in zone 3",
+    "ai_response": "I understand there's a wet floor hazard in zone 3. Can you tell me how large the area is and if there are warning signs up?",
+    "user_followup": "It's about 10 square feet near the entrance, no signs yet",
+    "ai_classification": "This is an urgent slip hazard that needs immediate attention"
+  },
+  "audio_files": {
+    "user_input": "gs://bucket/user_input_123.ogg",
+    "ai_response": "gs://bucket/ai_response_123.mp3"
+  },
   "classification": {
     "urgency": "emergency|urgent|routine",
     "type": "injury|near-miss|hazard|equipment", 
     "location": "Zone 3",
-    "confidence": 0.85
+    "confidence": 0.85,
+    "conversation_quality": 0.92
   },
   "status": "open|resolved",
   "follow_ups": [
     {
       "timestamp": "2024-01-16T10:30:00Z",
       "message": "Was this resolved?",
-      "response": "Yes, cleaned up"
+      "voice_response": "gs://bucket/followup_voice_123.mp3",
+      "response": "Yes, cleaned up and signs posted"
     }
   ]
 }
@@ -46,7 +58,7 @@ Telegram Bot → n8n Webhook → n8n Workflows → Vertex AI → Firestore → A
 
 ### n8n Workflow Specifications
 
-#### 1. Main Voice Processing Workflow
+#### 1. Conversational Voice Processing Workflow
 ```
 Trigger: Telegram Webhook
 ↓
@@ -56,19 +68,26 @@ Convert Audio Format (HTTP node to external service)
 ↓
 Speech-to-Text (HTTP node to Vertex AI)
 ↓
-Classify Incident (HTTP node to Vertex AI Gemini)
+Conversational AI Processing (HTTP node to Vertex AI Gemini)
+├── Initial incident understanding
+├── Follow-up questions generation
+└── Classification within conversation
 ↓
-Store in Firestore (Google Firestore node)
+Generate Voice Response (HTTP node to ElevenLabs)
+↓
+Send Voice Response (Telegram node with audio)
+↓
+Store Conversation in Firestore (Google Firestore node)
 ↓
 Route by Urgency (If/Switch node)
-├── Emergency → Send SMS (Twilio node)
+├── Emergency → Send Email Alert (Gmail node)
 ├── Urgent → Send Telegram Alert  
 └── Routine → Log only
 ↓
-Send Confirmation (Telegram node)
+Continue Conversation Loop (if needed)
 ```
 
-#### 2. Follow-up Automation Workflow
+#### 2. Conversational Follow-up Automation Workflow
 ```
 Trigger: Schedule (every 24 hours)
 ↓
@@ -76,7 +95,9 @@ Query Unresolved Incidents (Google Firestore node)
 ↓
 For Each Open Incident (Loop node)
 ├── Check Time Since Reported
-├── Send Follow-up Message (Telegram node)
+├── Generate Personalized Follow-up (Gemini HTTP node)
+├── Create Voice Follow-up (ElevenLabs HTTP node)
+├── Send Voice Follow-up Message (Telegram node)
 └── Update Follow-up Count (Google Firestore node)
 ```
 
@@ -89,27 +110,38 @@ Transform Data (Code node)
 Update Airtable Record (Airtable node)
 ```
 
-### AI Classification Prompt Template
+### AI Conversational Prompt Template
 ```
-Classify this construction safety incident: {{$json.transcript}}
+You are a helpful safety companion for construction workers. Have a natural conversation to understand the safety incident they're reporting.
 
-Return JSON only:
+User input: {{$json.transcript}}
+
+Your response should:
+1. Acknowledge their report with empathy
+2. Ask clarifying questions if needed (location, severity, people affected)
+3. Provide immediate safety guidance if appropriate
+4. Extract incident details naturally through conversation
+
+Then classify the incident:
 {
   "urgency": "emergency|urgent|routine",
   "type": "injury|near-miss|hazard|equipment",  
   "location": "extracted location or 'unknown'",
-  "confidence": 0.0-1.0
+  "confidence": 0.0-1.0,
+  "conversation_quality": 0.0-1.0,
+  "next_question": "follow-up question if needed",
+  "ai_response": "natural conversational response",
+  "requires_followup": true|false
 }
 
-Classification Rules:
-- Emergency = injury occurred or immediate danger
-- Urgent = could cause injury within hours
-- Routine = general safety concern
+Conversation Rules:
+- Keep responses under 30 seconds when spoken
+- Use construction-friendly language (not corporate speak)
+- Emergency = injury occurred, immediate danger, or serious hazard
+- Urgent = could cause injury within hours, equipment failure
+- Routine = general safety observation, minor issue
 
-Construction Terms:
-- Fall protection, scaffolding, heavy machinery
-- PPE violations, electrical hazards
-- Material handling, excavation safety
+Be conversational, helpful, and focused on safety.
 ```
 
 ### Infrastructure Requirements
@@ -122,7 +154,8 @@ Construction Terms:
 
 **External Services:**
 - Telegram Bot token from @BotFather
-- Twilio account for SMS alerts
+- ElevenLabs API key for voice synthesis
+- Gmail API credentials for email alerts
 - Airtable workspace and base
 
 ### Terraform Infrastructure Template
@@ -173,13 +206,15 @@ spec:
 - Rate limiting on webhook endpoints via n8n
 
 ### Performance Requirements
-- Voice processing: <5 seconds (n8n workflow execution)
+- Conversational response time: <3 seconds (speech-to-text → Gemini → ElevenLabs → response)
+- Voice synthesis quality: Clear, natural speech via ElevenLabs
 - Dashboard load time: <1 second (Airtable native performance)
-- Support 10 concurrent workflows
+- Support 10 concurrent conversational workflows
 - 99% uptime via Cloud Run auto-scaling
 
 ### Monitoring
-- n8n workflow execution metrics via built-in monitoring
+- n8n conversational workflow execution metrics via built-in monitoring
 - Cloud Run metrics (CPU, memory, request latency)
-- Vertex AI API usage and latency
-- Airtable sync success rate
+- Vertex AI API usage and latency (Speech-to-Text + Gemini)
+- ElevenLabs API usage and voice generation success rate
+- Airtable sync success rate for conversation data

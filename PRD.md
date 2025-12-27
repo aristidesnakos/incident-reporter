@@ -2,12 +2,13 @@
 ## Digital Foreman MVP - No-Code Voice Safety Reporter
 
 ### Product Vision
-Voice-activated safety companion built entirely with no-code tools that eliminates reporting friction through Telegram bot interface and AI-powered incident triage, while creating reusable templates for future hackathons.
+Conversational AI safety companion built entirely with no-code tools that eliminates reporting friction through natural voice conversations via Telegram bot. Uses ElevenLabs + Google Cloud Vertex AI to create human-like interactions for incident reporting, while creating reusable templates for future hackathons.
 
 ### Success Metrics
-- **Primary**: Incident reporting time: 5 minutes → 30 seconds
-- **Secondary**: Worker participation rate: 20% → 80%
-- **Technical**: 95% voice transcription accuracy, <3 second response time
+- **Primary**: Incident reporting time: 5 minutes → 30 seconds via natural conversation
+- **Secondary**: Worker participation rate: 20% → 80% through improved UX
+- **Technical**: 95% voice transcription accuracy, <3 second conversational response time
+- **Conversational**: Natural voice interactions feel human-like (ElevenLabs + Gemini)
 - **Development**: 24-hour implementation vs 72-hour traditional development
 
 ### Target User
@@ -15,30 +16,34 @@ Construction workers on active job sites who need to report safety incidents qui
 
 ### Core User Stories
 
-#### Epic 1: Voice Incident Capture
+#### Epic 1: Conversational Voice Incident Capture
 ```
 As a construction worker
-I want to report safety incidents by voice message to Telegram
-So that I can quickly log incidents without typing on small screens with gloves
+I want to have natural voice conversations with an AI safety companion
+So that I can quickly report incidents through natural speech without forms or typing
 
 Acceptance Criteria:
-- QR code leads to Telegram bot
-- Bot accepts voice messages up to 5MB
-- Bot responds with confirmation within 5 seconds
-- Voice transcription accuracy >90% for basic safety terms
+- QR code leads to conversational Telegram bot
+- Bot accepts voice messages and responds with natural voice
+- Bot asks follow-up questions conversationally via ElevenLabs voice
+- Vertex AI Gemini understands construction safety context
+- Voice transcription accuracy >90% for safety terminology
+- Complete conversation flow under 60 seconds
 ```
 
-#### Epic 2: Intelligent Triage
+#### Epic 2: Conversational Intelligence & Triage
 ```
 As a site safety manager
-I want incidents automatically categorized by urgency
-So that I can respond to critical issues immediately
+I want incidents automatically categorized through natural AI conversation
+So that I can respond to critical issues immediately with proper context
 
 Acceptance Criteria:
-- EMERGENCY: Auto-SMS within 30 seconds
+- AI extracts incident details through conversational prompts
+- EMERGENCY: Auto-email alert within 30 seconds
 - URGENT: Telegram alert within 5 minutes  
 - ROUTINE: Added to daily dashboard
-- 90% accurate urgency classification
+- 90% accurate urgency classification via Gemini conversation
+- Natural follow-up questions improve data quality
 ```
 
 #### Epic 3: Auto-Follow-Up
@@ -68,9 +73,11 @@ Acceptance Criteria:
 ```
 
 ### Technical Innovation Goals
-- **No-Code First**: Zero custom application code - only n8n workflows and configurations
+- **Conversational AI Integration**: ElevenLabs + Google Cloud Vertex AI via n8n HTTP nodes
+- **No-Code First**: Zero custom application code - only visual n8n workflows
 - **Infrastructure as Code**: Terraform templates for one-command deployment
-- **Reusable Templates**: Create hackathon starter kit for voice/AI projects
+- **Reusable Templates**: Create hackathon starter kit for voice/conversational AI projects
+- **Natural Voice UX**: Human-like personality and voice using ElevenLabs synthesis
 - **Rapid MVP**: Demonstrate 67% faster development time vs traditional approach
 
 ### Out of Scope (V1)
@@ -84,9 +91,10 @@ Acceptance Criteria:
 - User management system beyond Telegram authentication
 
 ### Definition of Done
-- End-to-end voice reporting works through n8n workflows
-- Emergency incidents trigger SMS via Twilio node within 30 seconds
-- Airtable dashboard shows real-time incident data
-- System handles 10 concurrent n8n workflow executions
-- Demo-ready with seeded test data in Airtable
-- **Bonus**: Reusable template documented and ready for future hackathons
+- End-to-end conversational voice reporting works through n8n workflows
+- Natural voice conversations via ElevenLabs + Gemini feel human-like
+- Emergency incidents trigger email alerts within 30 seconds
+- Airtable dashboard shows real-time incident data with conversation transcripts
+- System handles 10 concurrent conversational workflow executions
+- Demo-ready with seeded test data and sample voice conversations
+- **Bonus**: Reusable conversational AI template documented for future hackathons

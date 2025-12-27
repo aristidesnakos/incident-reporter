@@ -6,34 +6,37 @@
 - [ ] Terraform infrastructure template deployed (15 min)
 - [ ] n8n instance accessible and configured (5 min) 
 - [ ] Airtable base created from template (3 min)
-- [ ] Twilio account credentials configured (2 min)
+- [ ] ElevenLabs API key configured (2 min)
+- [ ] Gmail API credentials configured for email alerts (optional) (2 min)
 
-### Sprint 1 Checklist: Core Workflow Development
+### Sprint 1 Checklist: Conversational Voice Pipeline
 
-#### Voice Processing Pipeline (4 hours)
+#### Voice Input Processing (4 hours)
 - [ ] n8n Telegram webhook trigger configured
 - [ ] Voice file download node working
 - [ ] Audio format conversion via external API
 - [ ] Vertex AI Speech-to-Text HTTP node working
 - [ ] Basic voice → text flow tested and working
 
-#### AI Classification & Routing (4 hours)
-- [ ] Vertex AI Gemini HTTP node configured
-- [ ] Incident classification prompt template loaded
-- [ ] Classification JSON parsing working
+#### AI Conversation & Voice Response (4 hours)
+- [ ] Vertex AI Gemini conversational prompt configured
+- [ ] ElevenLabs text-to-speech HTTP node integrated
+- [ ] Incident classification within conversation flow
 - [ ] Firestore write node saving incidents correctly
 - [ ] Urgency-based routing (If/Switch nodes) working
-- [ ] Emergency SMS trigger via Twilio node functional
-- [ ] Telegram confirmation message sending
+- [ ] Emergency email trigger via Gmail node functional
+- [ ] Voice response via ElevenLabs to Telegram working
+- [ ] End-to-end voice conversation flow tested
 
 ### Sprint 2 Checklist: Intelligence & Dashboard
 
-#### Smart Triage Enhancement (4 hours)
-- [ ] Construction terminology added to AI prompt template
-- [ ] Location extraction logic improved in prompt
-- [ ] Confidence threshold tuning via n8n If nodes (>0.8)
+#### Conversational Intelligence Enhancement (4 hours)
+- [ ] Enhanced Gemini prompts for natural conversation
+- [ ] Construction safety terminology integrated
+- [ ] Voice personality and tone optimization via ElevenLabs settings
+- [ ] Conversation flow logic refined for better UX
 - [ ] Test incident data created for validation
-- [ ] Classification accuracy >90% verified on test data
+- [ ] Natural conversation accuracy >90% verified on test data
 
 #### Dashboard & Follow-up Automation (4 hours)  
 - [ ] Airtable base configured with incident views
@@ -81,10 +84,12 @@
 - [ ] Cloud Run monitoring/alerting configured
 
 ### Final Demo Checklist
-- [ ] Telegram bot responding to voice messages
-- [ ] Emergency SMS alerts triggering correctly
+- [ ] Telegram bot responding to voice messages conversationally
+- [ ] ElevenLabs voice responses working clearly
+- [ ] Emergency email alerts triggering correctly
 - [ ] Airtable dashboard showing real-time incident data
 - [ ] n8n workflows executing under 5 seconds
+- [ ] End-to-end voice conversation flow smooth and natural
 - [ ] Mobile access working on demo device
 - [ ] Backup plan ready if live demo fails
 

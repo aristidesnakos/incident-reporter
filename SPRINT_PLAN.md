@@ -7,20 +7,21 @@
 **Tasks:**
 - [ ] Create Telegram bot via @BotFather (15 min)
 - [ ] Deploy Terraform infrastructure template (45 min)
-  - GCP project with required APIs
+  - GCP project with required APIs (including Vertex AI)
   - Firestore database + Cloud Storage
   - Service accounts with proper IAM
 - [ ] Deploy n8n instance on Cloud Run (30 min)
 - [ ] Set up Airtable base from template (15 min)
-- [ ] Configure Twilio SMS credentials (15 min)
+- [ ] Configure ElevenLabs API credentials (10 min)
+- [ ] Configure Gmail email credentials (5 min)
 
 **Definition of Done**: All infrastructure deployed, n8n accessible, Airtable ready
 
 ---
 
-### Sprint 1: Core Workflow Development (8 hours)
+### Sprint 1: Conversational Voice Pipeline (8 hours)
 
-#### Hour 1-4: Primary Voice Processing Pipeline
+#### Hour 1-4: Voice Input Processing
 **Assignee**: Workflow Engineer
 
 **Tasks:**
@@ -31,31 +32,32 @@
 
 **Definition of Done**: Voice messages converted to text in n8n
 
-#### Hour 5-8: AI Classification & Routing
+#### Hour 5-8: AI Conversation & Voice Response
 **Assignee**: AI Engineer
 
 **Tasks:**
-- [ ] Vertex AI Gemini node for incident classification (2h)
-- [ ] Incident urgency routing logic (1h)
+- [ ] Vertex AI Gemini conversational prompt setup (2h)
+- [ ] ElevenLabs text-to-speech integration via n8n (2h)
+- [ ] Incident classification within conversation flow (1h)
 - [ ] Firestore write operations from n8n (1h)
-- [ ] Emergency SMS trigger via Twilio node (2h)
-- [ ] Basic error handling in workflow (2h)
+- [ ] Emergency email trigger via Gmail node (1h)
+- [ ] Voice confirmation response via ElevenLabs (1h)
 
-**Definition of Done**: Voice → Classification → Database + Emergency SMS working
+**Definition of Done**: Voice → AI Conversation → Voice Response + Database working
 
 ---
 
 ### Sprint 2: Intelligence & Dashboard (8 hours)
 
-#### Hour 9-12: Smart Triage Enhancement
+#### Hour 9-12: Conversational Intelligence Enhancement
 **Assignee**: AI Engineer
 
 **Tasks:**
-- [ ] Improve AI prompts for construction terminology (2h)
-- [ ] Location extraction enhancement (1h)
-- [ ] Confidence threshold tuning (1h)
+- [ ] Enhanced Gemini prompts for natural conversation (2h)
+- [ ] Construction safety terminology integration (1h)
+- [ ] Voice personality and tone optimization (1h)
 
-**Definition of Done**: >90% accurate classification on test data
+**Definition of Done**: Natural voice conversations with >90% classification accuracy
 
 #### Hour 13-16: Dashboard & Follow-up Automation
 **Assignee**: Dashboard Engineer
@@ -104,9 +106,9 @@ This project creates reusable components for future hackathons:
 - Service account configurations
 
 **Workflow Templates** (`/workflows`):
-- Voice processing pipeline (Telegram → AI → Database)
-- SMS alerting with Twilio
-- Automated follow-up scheduling
+- Conversational voice pipeline (Telegram → Speech-to-Text → Gemini → ElevenLabs → Database)
+- Email alerting with Gmail
+- Automated follow-up scheduling with voice responses
 - Database sync to external dashboards
 
 **Dashboard Templates** (`/dashboards`):
