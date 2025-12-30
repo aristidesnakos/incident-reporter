@@ -187,13 +187,13 @@ conversation_config={
 4. Copy Agent ID and API key for terraform.tfvars
 5. Test at elevenlabs.io/app/conversational-ai
 
-#### Airtable Dashboard (5 minutes)  
+#### Airtable Dashboard (5 minutes)  DONE
 1. Create base: "Digital Foreman Incidents"
 2. Configure fields: ID, Timestamp, User Name, Incident Type (Injury/Near-miss/Hazard/Equipment), Urgency (Emergency/Urgent/Routine), Location, Description, Status, Follow-up Count, Confidence Score
 3. Create views: Emergency, Open Incidents, Today's Reports, Location Summary
 4. Get API key and Base ID from airtable.com/api
 
-#### terraform.tfvars Configuration
+#### terraform.tfvars Configuration DONE
 ```hcl
 project_id = "your-gcp-project-id"
 telegram_bot_token = "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"  
