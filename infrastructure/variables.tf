@@ -49,15 +49,6 @@ variable "elevenlabs_agent_id" {
   }
 }
 
-variable "gmail_credentials_json" {
-  description = "Gmail API credentials JSON (base64 encoded)"
-  type        = string
-  sensitive   = true
-  validation {
-    condition     = length(var.gmail_credentials_json) > 0
-    error_message = "Gmail credentials JSON must not be empty."
-  }
-}
 
 variable "airtable_api_key" {
   description = "Airtable API Key from airtable.com/api"
@@ -88,12 +79,3 @@ variable "environment" {
   }
 }
 
-variable "notification_email" {
-  description = "Email address to receive emergency notifications"
-  type        = string
-  default     = ""
-  validation {
-    condition = var.notification_email == "" || can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.notification_email))
-    error_message = "Notification email must be a valid email address or empty string."
-  }
-}

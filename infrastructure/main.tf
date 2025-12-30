@@ -50,11 +50,6 @@ variable "elevenlabs_agent_id" {
   type        = string
 }
 
-variable "gmail_credentials_json" {
-  description = "Gmail API credentials JSON (base64 encoded)"
-  type        = string
-  sensitive   = true
-}
 
 variable "airtable_api_key" {
   description = "Airtable API Key"
@@ -81,7 +76,6 @@ resource "google_project_service" "required_apis" {
     "firestore.googleapis.com",
     "storage.googleapis.com",
     "secretmanager.googleapis.com",
-    "gmail.googleapis.com",
     "eventarc.googleapis.com"
   ])
   
@@ -142,7 +136,6 @@ resource "google_project_iam_member" "function_permissions" {
     "roles/firestore.user",
     "roles/storage.admin",
     "roles/secretmanager.accessor",
-    "roles/gmail.send",
     "roles/logging.logWriter"
   ])
   
@@ -191,18 +184,6 @@ resource "google_secret_manager_secret_version" "elevenlabs_agent_id" {
   secret_data = var.elevenlabs_agent_id
 }
 
-resource "google_secret_manager_secret" "gmail_credentials" {
-  secret_id = "gmail-credentials"
-  
-  replication {
-    auto {}
-  }
-}
-
-resource "google_secret_manager_secret_version" "gmail_credentials" {
-  secret      = google_secret_manager_secret.gmail_credentials.id
-  secret_data = var.gmail_credentials_json
-}
 
 resource "google_secret_manager_secret" "airtable_api_key" {
   secret_id = "airtable-api-key"
@@ -230,18 +211,42 @@ resource "google_secret_manager_secret_version" "airtable_base_id" {
   secret_data = var.airtable_base_id
 }
 
-# Create zip file for Cloud Functions source code
-data "archive_file" "function_zip" {
+# Create zip files for each Cloud Function
+data "archive_file" "telegram_handler_zip" {
   type        = "zip"
-  output_path = "/tmp/function-source.zip"
-  source_dir  = "../functions"
+  output_path = "/tmp/telegram-handler-source.zip"
+  source_dir  = "../src/functions/telegram_handler"
 }
 
-# Upload function source to Cloud Storage
-resource "google_storage_bucket_object" "function_source" {
-  name   = "function-source-${data.archive_file.function_zip.output_md5}.zip"
+data "archive_file" "airtable_sync_zip" {
+  type        = "zip"
+  output_path = "/tmp/airtable-sync-source.zip"
+  source_dir  = "../src/functions/airtable_sync"
+}
+
+data "archive_file" "followup_scheduler_zip" {
+  type        = "zip"
+  output_path = "/tmp/followup-scheduler-source.zip"
+  source_dir  = "../src/functions/followup_scheduler"
+}
+
+# Upload function sources to Cloud Storage
+resource "google_storage_bucket_object" "telegram_handler_source" {
+  name   = "telegram-handler-${data.archive_file.telegram_handler_zip.output_md5}.zip"
   bucket = google_storage_bucket.function_source.name
-  source = data.archive_file.function_zip.output_path
+  source = data.archive_file.telegram_handler_zip.output_path
+}
+
+resource "google_storage_bucket_object" "airtable_sync_source" {
+  name   = "airtable-sync-${data.archive_file.airtable_sync_zip.output_md5}.zip"
+  bucket = google_storage_bucket.function_source.name
+  source = data.archive_file.airtable_sync_zip.output_path
+}
+
+resource "google_storage_bucket_object" "followup_scheduler_source" {
+  name   = "followup-scheduler-${data.archive_file.followup_scheduler_zip.output_md5}.zip"
+  bucket = google_storage_bucket.function_source.name
+  source = data.archive_file.followup_scheduler_zip.output_path
 }
 
 # Telegram webhook handler Cloud Function
@@ -256,7 +261,7 @@ resource "google_cloudfunctions2_function" "telegram_handler" {
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
-        object = google_storage_bucket_object.function_source.name
+        object = google_storage_bucket_object.telegram_handler_source.name
       }
     }
   }
@@ -295,17 +300,13 @@ resource "google_cloudfunctions2_function" "telegram_handler" {
       version    = "latest"
     }
     
-    secret_environment_variables {
-      key        = "GMAIL_CREDENTIALS"
-      project_id = var.project_id
-      secret     = google_secret_manager_secret.gmail_credentials.secret_id
-      version    = "latest"
-    }
   }
 
   depends_on = [
     google_project_service.required_apis,
-    google_storage_bucket_object.function_source
+    google_storage_bucket_object.telegram_handler_source,
+    google_storage_bucket_object.airtable_sync_source,
+    google_storage_bucket_object.followup_scheduler_source
   ]
 }
 
@@ -330,7 +331,7 @@ resource "google_cloudfunctions2_function" "airtable_sync" {
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
-        object = google_storage_bucket_object.function_source.name
+        object = google_storage_bucket_object.airtable_sync_source.name
       }
     }
   }
@@ -380,7 +381,9 @@ resource "google_cloudfunctions2_function" "airtable_sync" {
 
   depends_on = [
     google_project_service.required_apis,
-    google_storage_bucket_object.function_source
+    google_storage_bucket_object.telegram_handler_source,
+    google_storage_bucket_object.airtable_sync_source,
+    google_storage_bucket_object.followup_scheduler_source
   ]
 }
 
@@ -396,7 +399,7 @@ resource "google_cloudfunctions2_function" "followup_scheduler" {
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
-        object = google_storage_bucket_object.function_source.name
+        object = google_storage_bucket_object.followup_scheduler_source.name
       }
     }
   }
@@ -437,7 +440,9 @@ resource "google_cloudfunctions2_function" "followup_scheduler" {
 
   depends_on = [
     google_project_service.required_apis,
-    google_storage_bucket_object.function_source
+    google_storage_bucket_object.telegram_handler_source,
+    google_storage_bucket_object.airtable_sync_source,
+    google_storage_bucket_object.followup_scheduler_source
   ]
 }
 

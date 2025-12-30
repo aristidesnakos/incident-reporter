@@ -8,27 +8,27 @@ Digital Foreman MVP - A voice-activated safety incident reporting system using T
 
 ## Architecture
 
-**No-Code Tech Stack:**
-- Workflow Engine: n8n (self-hosted on Cloud Run)
-- Bot Platform: Telegram Bot API (via n8n Telegram nodes)
-- AI: Vertex AI Gemini 1.5 Flash (via n8n HTTP nodes)
-- Database: Firestore (via n8n Google Firestore nodes)
-- Storage: Cloud Storage (via n8n Google Cloud Storage nodes)
-- Dashboard: Airtable (via n8n Airtable nodes)
-- Notifications: Gmail/email (via n8n Gmail nodes) - simpler than SMS
+**Serverless Tech Stack:**
+- Voice AI: ElevenLabs Conversational AI Agent (native voice-to-voice)
+- Bot Platform: Telegram Bot API (via Cloud Functions)
+- Backend: Google Cloud Functions (serverless, event-driven)
+- Database: Firestore (document database)
+- Storage: Cloud Storage (audio conversation logs)
+- Dashboard: Airtable (real-time incident tracking)
+- Notifications: Telegram-only (emergency alerts via chat)
 - Infrastructure: Terraform for repeatable deployments
 
 **Data Flow:**
 ```
-Telegram Bot → n8n Webhook → n8n Workflows → Vertex AI → Firestore → Airtable Dashboard
+Telegram Bot → Cloud Function Webhook → ElevenLabs Conversational AI Agent → Firestore → Cloud Function → Airtable Dashboard
 ```
 
 ## Key Components
 
-### n8n Workflow Architecture
-1. **Main Voice Processing Workflow**: Telegram webhook → download voice file → audio conversion → Vertex AI transcription → incident classification → Firestore storage → urgency-based routing (email/Telegram/log) → confirmation message
-2. **Follow-up Automation Workflow**: Scheduled trigger (24h) → query unresolved incidents → send follow-up messages → update follow-up counts
-3. **Dashboard Sync Workflow**: Firestore changes webhook → data transformation → Airtable record updates
+### Cloud Function Architecture
+1. **Telegram Voice Handler** (`telegram-voice-handler`): Webhook → download voice file → ElevenLabs agent processing → Firestore storage → urgency-based routing → voice response
+2. **Follow-up Scheduler** (`followup-scheduler`): Daily trigger → query unresolved incidents → ElevenLabs follow-up → Telegram delivery
+3. **Airtable Sync** (`airtable-sync`): Firestore changes → data transformation → Airtable updates
 
 ### Incident Data Model (Firestore)
 - Basic incident info: timestamp, user, transcript, audio file URL
@@ -38,64 +38,139 @@ Telegram Bot → n8n Webhook → n8n Workflows → Vertex AI → Firestore → A
 ## Development Requirements
 
 **Infrastructure (Terraform-managed):**
-- Google Cloud Project with Firestore, Cloud Storage, Cloud Run
-- n8n instance deployed on Cloud Run with PostgreSQL backend
-- Service accounts with minimal IAM permissions
+- Google Cloud Project with Firestore, Cloud Storage, Cloud Functions
+- Service accounts with minimal IAM permissions  
+- Secret Manager for credential storage
 
 **External Service Setup:**
 - Telegram Bot token from @BotFather  
-- Gmail account for email alerts (simpler than SMS setup)
+- ElevenLabs Conversational AI Agent ID and API key
 - Airtable workspace and base for dashboard
 
-**No-Code Development Process:**
-- Primary development happens in n8n visual workflow editor
-- Terraform templates handle infrastructure provisioning
-- Airtable serves as ready-made dashboard (no custom frontend needed)
-- Minimal custom code reduces security attack surface
+## Development Commands
 
-## Development Process
+**Infrastructure Deployment:**
+```bash
+# One-command infrastructure setup
+./deploy.sh [project-id]
 
-**Infrastructure Setup (30 minutes):**
-- Deploy Terraform templates for GCP resources
-- Configure n8n instance on Cloud Run  
-- Set up external services (Telegram bot, Twilio, Airtable)
+# Manual Terraform deployment
+cd infrastructure
+terraform init
+terraform plan -var="project_id=your-project"
+terraform apply -var="project_id=your-project"
+```
 
-**No-Code Development Sprints:**
-- Sprint 1: Core n8n workflows (voice processing, AI classification, routing)
-- Sprint 2: Follow-up automation and smart triage tuning
-- Sprint 3: Airtable dashboard integration and data sync
-- Sprint 4: Testing, performance optimization, demo preparation
+**ElevenLabs Agent Setup:**
+```bash
+# Create conversational AI agent
+cd src/agents
+./setup_agent.sh
+python3 create_agent.py
+```
 
-**Key Development Activities:**
-- Visual workflow creation in n8n editor (no traditional coding)
-- AI prompt engineering for incident classification
-- Airtable base design for dashboard views
-- Terraform infrastructure updates as needed
+**Function Development:**
+```bash
+# Install dependencies for local development
+cd src/functions/telegram_handler
+pip install -r requirements.txt
+
+# Test individual functions locally (using Functions Framework)
+functions-framework --target telegram_handler --debug
+```
+
+**Monitoring and Debugging:**
+```bash
+# View Cloud Function logs
+gcloud functions logs read telegram-voice-handler --project=your-project
+
+# Monitor Firestore operations
+gcloud firestore operations list --project=your-project
+
+# Check deployment status
+terraform output
+```
+
+## Project Structure
+
+**Core Architecture (Option 2 Structure):**
+- `/src/functions/` - Individual Cloud Functions (Python 3.11)
+  - `/telegram_handler/` - Voice message processing
+  - `/airtable_sync/` - Real-time dashboard sync  
+  - `/followup_scheduler/` - Automated follow-ups
+- `/src/agents/` - ElevenLabs agent setup and utilities
+- `/src/shared/` - Common utilities (replicated per function)
+- `/infrastructure/` - Terraform infrastructure templates
+- `/docs/` - Project documentation and sprint planning
+
+**Key Files:**
+- `deploy.sh` - One-command infrastructure deployment
+- `src/functions/*/main.py` - Individual Cloud Function entry points
+- `infrastructure/main.tf` - Complete Terraform infrastructure
+- `src/agents/setup_agent.sh` - ElevenLabs conversational agent setup
+
+**Development Process:**
+- Terraform infrastructure is deployed first via `./deploy.sh`
+- ElevenLabs agent created via `./src/agents/setup_agent.sh`
+- Cloud Functions handle serverless voice processing
+- Airtable serves as ready-made dashboard
 
 ## Documentation Discipline
 
 **CRITICAL**: Claude Code must consult and update these documents during development:
 
 ### Before Starting Any Task:
-1. **Read SPRINT_PLAN.md** - Understand current sprint goals and timeline
-2. **Read TECHNICAL_SPEC.md** - Review architecture and integration requirements  
-3. **Read DEVELOPMENT_CHECKLIST.md** - Check off completed tasks, update status
+1. **Read docs/SPRINT_PLAN.md** - Understand current sprint goals and timeline
+2. **Read docs/TECHNICAL_SPEC.md** - Review architecture and integration requirements  
+3. **Read docs/DEVELOPMENT_CHECKLIST.md** - Check off completed tasks, update status
 
 ### During Development:
-- **Update DEVELOPMENT_CHECKLIST.md** immediately after completing each task
-- **Reference TEAM_RESPONSIBILITIES.md** to understand role boundaries
-- **Check RISK_REGISTER.md** if encountering blockers
+- **Update docs/DEVELOPMENT_CHECKLIST.md** immediately after completing each task
+- **Reference docs/TEAM_RESPONSIBILITIES.md** to understand role boundaries
+- **Check docs/RISK_REGISTER.md** if encountering blockers
 
 ### After Completing Major Milestones:
-- **Update SPRINT_PLAN.md** if timeline or approach changes
-- **Update TECHNICAL_SPEC.md** if architecture evolves
-- **Update PRD.md** if requirements shift
+- **Update docs/SPRINT_PLAN.md** if timeline or approach changes
+- **Update docs/TECHNICAL_SPEC.md** if architecture evolves
+- **Update docs/PRD.md** if requirements shift
 
 ### Documentation Commands:
-- `read SPRINT_PLAN.md` before starting new work
-- `edit DEVELOPMENT_CHECKLIST.md` to mark tasks complete
-- `read TECHNICAL_SPEC.md` when implementing integrations
+```bash
+# Run documentation discipline check before starting work
+./enforce-docs.sh
+
+# Key files to consult in Claude Code:
+read docs/SPRINT_PLAN.md          # Sprint goals and timeline
+read docs/TECHNICAL_SPEC.md       # Architecture and integration requirements  
+read docs/DEVELOPMENT_CHECKLIST.md # Task status and completion tracking
+```
+
+**Enforcement Script:**
+- Always run `./enforce-docs.sh` before starting development
+- Updates `docs/DEVELOPMENT_CHECKLIST.md` immediately after completing tasks
+- Consult `docs/RISK_REGISTER.md` when encountering blockers
 
 **Failure to consult docs = incomplete implementation**
 
-Refer to TECHNICAL_SPEC.md for detailed n8n node configurations and workflow specifications.
+## Testing and Quality
+
+**No formal test suite exists** - this is a rapid prototype/MVP project focused on demonstrating voice AI capabilities. Quality assurance happens through:
+
+- **End-to-end testing**: Voice message → Telegram → Cloud Function → ElevenLabs → Firestore → Airtable
+- **Infrastructure validation**: `terraform plan` and `terraform apply` success
+- **Function deployment**: Cloud Functions deployment logs and execution monitoring
+- **Integration testing**: Manual testing of Telegram bot responses
+
+**Quality Checks:**
+```bash
+# Validate Terraform configuration
+cd infrastructure && terraform validate
+
+# Check Cloud Function deployment status
+gcloud functions describe telegram-voice-handler --region=us-central1
+
+# Monitor function execution logs
+gcloud functions logs read telegram-voice-handler --limit=50
+```
+
+Refer to docs/TECHNICAL_SPEC.md for detailed Cloud Function specifications and ElevenLabs agent configurations.
