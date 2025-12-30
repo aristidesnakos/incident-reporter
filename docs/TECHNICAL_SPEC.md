@@ -13,7 +13,7 @@ Telegram Bot → Cloud Function Webhook → ElevenLabs Conversational AI Agent �
 - **Database**: Firestore (document database)
 - **Storage**: Cloud Storage (audio conversation logs)
 - **Dashboard**: Airtable (real-time incident tracking)
-- **Notifications**: Gmail API (emergency alerts)
+- **Notifications**: Telegram-only (emergency alerts via chat)
 - **Infrastructure**: Terraform for repeatable deployments
 
 ### Data Models
@@ -73,7 +73,7 @@ Receive agent response (voice + structured data)
 Store conversation in Firestore
 ↓
 Route by urgency classification
-├── Emergency → Trigger email alert
+├── Emergency → Trigger Telegram alert
 ├── Urgent → Send Telegram notification
 └── Routine → Log only
 ↓
@@ -171,11 +171,37 @@ conversation_config={
 - Cloud Scheduler for follow-up automation
 - Service accounts with minimal IAM permissions
 
-**External Services:**
-- Telegram Bot token from @BotFather
-- ElevenLabs Conversational AI Agent ID + API key
-- Gmail API credentials for email alerts
-- Airtable workspace and base
+**External Services Setup:**
+
+#### Telegram Bot (3 minutes)
+1. Message @BotFather in Telegram
+2. Send `/newbot` → name: "Digital Foreman Safety Bot"  
+3. Username: "digitalforeman_safety_bot"
+4. Copy bot token for terraform.tfvars
+5. Configure: `/setdescription` - Voice-activated safety incident reporting
+
+#### ElevenLabs Conversational AI Agent (5 minutes)
+1. Sign up at elevenlabs.io (free tier: 10,000 chars/month)
+2. Profile → API Keys → Create "Digital Foreman Bot" 
+3. Run `./src/agents/setup_agent.sh` to create agent
+4. Copy Agent ID and API key for terraform.tfvars
+5. Test at elevenlabs.io/app/conversational-ai
+
+#### Airtable Dashboard (5 minutes)  
+1. Create base: "Digital Foreman Incidents"
+2. Configure fields: ID, Timestamp, User Name, Incident Type (Injury/Near-miss/Hazard/Equipment), Urgency (Emergency/Urgent/Routine), Location, Description, Status, Follow-up Count, Confidence Score
+3. Create views: Emergency, Open Incidents, Today's Reports, Location Summary
+4. Get API key and Base ID from airtable.com/api
+
+#### terraform.tfvars Configuration
+```hcl
+project_id = "your-gcp-project-id"
+telegram_bot_token = "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"  
+elevenlabs_api_key = "sk_1234567890abcdefghijklmnopqrstuvwxyz"
+elevenlabs_agent_id = "agent_1234567890abcdefghijklmnop"
+airtable_api_key = "patABCDEFGHIJKLMNOPQRSTUVWXYZ.1234567890abcdef"
+airtable_base_id = "appABCDEFGHIJKLMNOP"
+```
 
 ### Terraform Infrastructure Template
 ```hcl

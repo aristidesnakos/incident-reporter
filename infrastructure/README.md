@@ -24,7 +24,7 @@ Telegram Bot → Cloud Function → ElevenLabs Agent → Firestore → Airtable 
 # Create ElevenLabs conversational agent
 ./scripts/setup_agent.sh
 
-# Set up other services (see external-services-setup.md)
+# Set up other services (see docs/TECHNICAL_SPEC.md External Services Setup)
 ```
 
 ### 3. Deploy Infrastructure (2 minutes)

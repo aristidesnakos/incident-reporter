@@ -1,21 +1,21 @@
 # Sprint Planning & Roadmap
 ## Digital Foreman MVP - 12 Hour Conversational AI Development Plan
 
-### Sprint 0: Infrastructure Setup (1.5 hours)
+### Sprint 0: Infrastructure Setup (1.5 hours) ✅ COMPLETED
 **Goal**: Complete serverless infrastructure deployment using reusable templates
 
-**Tasks:**
-- [ ] Create Telegram bot via @BotFather (10 min)
-- [ ] Deploy Terraform infrastructure template (30 min)
+**Tasks Completed:**
+- [x] Create Telegram bot via @BotFather (10 min)
+- [x] Deploy Terraform infrastructure template (30 min)
   - GCP project with required APIs (Cloud Functions, Firestore)
   - Firestore database + Cloud Storage
   - Service accounts with proper IAM
 - [ ] Create ElevenLabs Conversational AI Agent (20 min)
 - [ ] Set up Airtable base from template (10 min)
-- [ ] Configure Gmail API credentials (10 min)
-- [ ] Deploy Cloud Functions (10 min)
+- [ ] Deploy Cloud Functions (15 min)
+- [ ] Configure Telegram webhook with deployed Cloud Function URL (5 min)
 
-**Definition of Done**: All infrastructure deployed, ElevenLabs agent created, Airtable ready
+**Status**: Infrastructure foundation ready, ElevenLabs agent and final integration pending
 
 ---
 
@@ -38,10 +38,10 @@
 **Tasks:**
 - [ ] Extract structured data from agent responses (30 min)
 - [ ] Implement Firestore storage (30 min)
-- [ ] Emergency email alerts via Gmail (30 min)
+- [ ] Telegram notification routing (emergency/urgent/routine) (30 min)
 - [ ] Test end-to-end voice → database flow (30 min)
 
-**Definition of Done**: Voice → ElevenLabs → Database + Alerts working
+**Definition of Done**: Voice → ElevenLabs → Database + Telegram Notifications working
 
 ---
 
@@ -85,11 +85,22 @@
 
 **Definition of Done**: Demo ready with tested backup plan
 
+### Progress Tracking
+- **Current Status**: Sprint 0 infrastructure foundation complete
+- **Next Milestone**: ElevenLabs agent creation and Cloud Functions deployment
+- **Target Completion**: 12 hours total development time
+
 ### Progress Checkpoints
-- **Hour 1.5**: Infrastructure fully deployed
+- **Hour 1.5**: Infrastructure fully deployed ✅ COMPLETED
 - **Hour 4**: Voice → ElevenLabs → Database pipeline working
-- **Hour 8**: Dashboard live with automated follow-ups
+- **Hour 8**: Dashboard live with automated follow-ups  
 - **Hour 11.5**: Demo ready with backup plan
+
+### Current Priorities (Next Session)
+1. Complete ElevenLabs Conversational AI Agent setup
+2. Deploy Cloud Functions for voice processing
+3. Configure Telegram webhook integration
+4. Test end-to-end voice → database flow
 
 ### Scope Protection Rules
 1. **Minimal custom code** - leverage ElevenLabs agent + Cloud Functions only
@@ -105,9 +116,9 @@ This project creates reusable components for future hackathons:
 - Firestore and Cloud Storage configuration
 - Service account configurations
 
-**Function Templates** (`/functions`):
-- Voice conversation handler (Telegram → ElevenLabs Agent → Database)
-- Email alerting with Gmail
+**Function Templates** (`/src/functions/`):
+- Voice conversation handler (Telegram → ElevenLabs Agent → Database)  
+- Telegram notification routing (emergency/urgent/routine alerts)
 - Automated follow-up scheduling with voice responses
 - Database sync to external dashboards
 

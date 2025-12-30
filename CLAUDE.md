@@ -120,17 +120,17 @@ terraform output
 **CRITICAL**: Claude Code must consult and update these documents during development:
 
 ### Before Starting Any Task:
-1. **Read docs/SPRINT_PLAN.md** - Understand current sprint goals and timeline
-2. **Read docs/TECHNICAL_SPEC.md** - Review architecture and integration requirements  
-3. **Read docs/DEVELOPMENT_CHECKLIST.md** - Check off completed tasks, update status
+1. **Read docs/SPRINT_PLAN.md** - Current sprint status, timeline, and priorities
+2. **Read docs/TECHNICAL_SPEC.md** - Architecture and integration requirements  
+3. **Check docs/DEVELOPMENT_CHECKLIST.md** - Technical implementation status
 
 ### During Development:
-- **Update docs/DEVELOPMENT_CHECKLIST.md** immediately after completing each task
-- **Reference docs/TEAM_RESPONSIBILITIES.md** to understand role boundaries
-- **Check docs/RISK_REGISTER.md** if encountering blockers
+- **Update docs/DEVELOPMENT_CHECKLIST.md** immediately after completing technical tasks
+- **Update docs/SPRINT_PLAN.md** progress tracking in real-time
+- **Check docs/PRD.md** for requirements validation when encountering blockers
 
-### After Completing Major Milestones:
-- **Update docs/SPRINT_PLAN.md** if timeline or approach changes
+### After Completing Sprints/Milestones:
+- **Update docs/SPRINT_PLAN.md** with completion status and next priorities
 - **Update docs/TECHNICAL_SPEC.md** if architecture evolves
 - **Update docs/PRD.md** if requirements shift
 
@@ -148,7 +148,7 @@ read docs/DEVELOPMENT_CHECKLIST.md # Task status and completion tracking
 **Enforcement Script:**
 - Always run `./enforce-docs.sh` before starting development
 - Updates `docs/DEVELOPMENT_CHECKLIST.md` immediately after completing tasks
-- Consult `docs/RISK_REGISTER.md` when encountering blockers
+- Consult `docs/TECHNICAL_SPEC.md` or `docs/PRD.md` when encountering blockers
 
 **Failure to consult docs = incomplete implementation**
 

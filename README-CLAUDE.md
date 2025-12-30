@@ -16,7 +16,7 @@
 ### During Development:
 - **Before implementing**: Reference relevant section in TECHNICAL_SPEC.md
 - **After each task**: Update DEVELOPMENT_CHECKLIST.md with [x] checkmark
-- **If blocked**: Check RISK_REGISTER.md for mitigation strategies
+- **If blocked**: Check PRD.md requirements or TECHNICAL_SPEC.md for guidance
 - **If scope changes**: Update PRD.md and get approval
 
 ### Documentation Update Commands:
@@ -30,8 +30,8 @@ edit TECHNICAL_SPEC.md
 # Update timeline
 edit SPRINT_PLAN.md
 
-# Check team roles
-read TEAM_RESPONSIBILITIES.md
+# Check requirements
+read PRD.md
 ```
 
 ## ⚠️ Documentation Failures That Break Development:

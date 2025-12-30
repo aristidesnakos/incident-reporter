@@ -46,9 +46,10 @@ docs/                  # Documentation
 ## Documentation
 
 See `docs/` directory for detailed documentation:
-- `docs/TECHNICAL_SPEC.md` - Architecture details
-- `docs/external-services-setup.md` - Setup guide  
-- `docs/DEVELOPMENT_CHECKLIST.md` - Task tracking
+- `docs/TECHNICAL_SPEC.md` - Architecture details and setup guide
+- `docs/DEVELOPMENT_CHECKLIST.md` - Technical task tracking
+- `docs/SPRINT_PLAN.md` - Project timeline and progress
+- `docs/PRD.md` - Product requirements
 
 ## Cost
 

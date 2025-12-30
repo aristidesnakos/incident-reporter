@@ -1,113 +1,55 @@
-# Development Checklist
-## Digital Foreman MVP - No-Code Implementation
+# Technical Implementation Checklist
+## Digital Foreman MVP - Serverless Architecture
 
-### Pre-Development Setup (30 minutes) ✅ COMPLETED
-**📖 Consult TECHNICAL_SPEC.md for detailed infrastructure requirements**
-- [x] Terraform infrastructure template created and ready for deployment (15 min)
-- [x] One-command deployment script created (`./deploy.sh`) (5 min)
-- [x] External services setup guide created (`external-services-setup.md`) (5 min)
-- [x] n8n workflow templates structured in `/workflows` directory (5 min)
-- [x]Telegram bot token obtained from @BotFather (5 min)
-- [ ] Infrastructure deployed via `./deploy.sh` (5 min)
-- [ ] n8n instance accessible and configured (5 min) 
-- [ ] Airtable base created from template (3 min)
-- [ ] ElevenLabs API key configured (2 min)
-- [ ] Gmail API credentials configured for email alerts (2 min)
+> **📖 Reference Guide**: Consult `docs/TECHNICAL_SPEC.md` for detailed implementation specifications
 
-### Sprint 1 Checklist: Conversational Voice Pipeline
-**📖 Consult TECHNICAL_SPEC.md for n8n workflow specifications and AI prompt templates**
+### Infrastructure Deployment
+- [x] Terraform infrastructure template (`./deploy.sh` script created)
+- [x] Telegram bot token obtained from @BotFather
+- [ ] ElevenLabs Conversational AI agent created
+- [ ] Cloud Functions deployed to GCP
+- [ ] Airtable base configured
+- [ ] Telegram webhook connected
 
-#### Voice Input Processing (4 hours)
-- [ ] n8n Telegram webhook trigger configured
-- [ ] Voice file download node working
-- [ ] Audio format conversion via external API
-- [ ] Vertex AI Speech-to-Text HTTP node working
-- [ ] Basic voice → text flow tested and working
+### Core Voice Processing
+- [ ] `telegram-voice-handler` Cloud Function operational
+- [ ] Voice message download from Telegram API
+- [ ] ElevenLabs agent voice-to-voice processing
+- [ ] Firestore incident document storage
+- [ ] Urgency classification logic (emergency/urgent/routine)
+- [ ] Voice response delivery via Telegram
 
-#### AI Conversation & Voice Response (4 hours)
-- [ ] Vertex AI Gemini conversational prompt configured
-- [ ] ElevenLabs text-to-speech HTTP node integrated
-- [ ] Incident classification within conversation flow
-- [ ] Firestore write node saving incidents correctly
-- [ ] Urgency-based routing (If/Switch nodes) working
-- [ ] Emergency email trigger via Gmail node functional
-- [ ] Voice response via ElevenLabs to Telegram working
+### Data Pipeline & Automation
+- [ ] `airtable-sync` Cloud Function with Eventarc triggers
+- [ ] `followup-scheduler` Cloud Function with Cloud Scheduler
+- [ ] Firestore → Airtable real-time sync
+- [ ] Automated follow-up voice messages (24h cycle)
+- [ ] Emergency notification routing via Telegram
+
+### Quality Assurance
 - [ ] End-to-end voice conversation flow tested
+- [ ] Response time <2 seconds validated
+- [ ] Concurrent user testing (10+ simultaneous)
+- [ ] Error handling (network failures, invalid audio, API timeouts)
+- [ ] Demo data seeded and tested
 
-### Sprint 2 Checklist: Intelligence & Dashboard
-
-#### Conversational Intelligence Enhancement (4 hours)
-- [ ] Enhanced Gemini prompts for natural conversation
-- [ ] Construction safety terminology integrated
-- [ ] Voice personality and tone optimization via ElevenLabs settings
-- [ ] Conversation flow logic refined for better UX
-- [ ] Test incident data created for validation
-- [ ] Natural conversation accuracy >90% verified on test data
-
-#### Dashboard & Follow-up Automation (4 hours)  
-- [ ] Airtable base configured with incident views
-- [ ] n8n → Airtable sync workflow operational
-- [ ] Real-time data updates flowing to Airtable
-- [ ] Scheduled follow-up workflow (24h trigger) working
-- [ ] Follow-up message templates configured in n8n
-- [ ] Status filtering and urgency views in Airtable
-
-### Sprint 3 Checklist: Testing & Demo Preparation (6 hours)
-
-#### End-to-End Testing & Performance (4 hours)
-- [ ] Complete voice → dashboard workflow tested
-- [ ] Error scenarios tested (network failures, invalid audio)
-- [ ] n8n workflow performance optimized
-- [ ] Demo environment tested and stable
-- [ ] Backup demo data seeded in Airtable
-
-#### Demo Readiness (2 hours)
-- [ ] Demo script written and rehearsed
-- [ ] Test incidents prepared for live demo
-- [ ] Fallback plan documented for technical issues
-- [ ] QR codes generated for bot access
-- [ ] Airtable views optimized for demo presentation
-
-### No-Code Quality Standards
-- [ ] All n8n workflows have error handling nodes
-- [ ] Workflow execution logging enabled
-- [ ] Credentials stored in n8n credential store (not hardcoded)
-- [ ] Environment variables used via n8n settings
-- [ ] Workflow documentation added for handoff
-
-### Security Checklist
-- [ ] All API credentials secured in Secret Manager
-- [ ] n8n credential store configured properly
+### Security & Performance
+- [ ] API credentials secured in Secret Manager
+- [ ] Cloud Functions IAM permissions minimized
 - [ ] Firestore security rules configured
-- [ ] No PII visible in n8n execution logs
-- [ ] Rate limiting configured on n8n webhooks
+- [ ] Audio files auto-deletion (7-day lifecycle)
+- [ ] Function memory allocation optimized
 
-### Infrastructure Checklist (Terraform-managed)
-- [ ] All GCP resources deployed via Terraform
-- [ ] n8n instance running on Cloud Run
-- [ ] Database backups enabled for n8n PostgreSQL
-- [ ] Firestore security rules applied
-- [ ] Cloud Run monitoring/alerting configured
+### Monitoring Setup
+- [ ] Cloud Functions execution metrics enabled
+- [ ] ElevenLabs API usage monitoring
+- [ ] Firestore operation logging
+- [ ] Telegram webhook delivery tracking
 
-### Final Demo Checklist
-- [ ] Telegram bot responding to voice messages conversationally
-- [ ] ElevenLabs voice responses working clearly
-- [ ] Emergency email alerts triggering correctly
-- [ ] Airtable dashboard showing real-time incident data
-- [ ] n8n workflows executing under 5 seconds
-- [ ] End-to-end voice conversation flow smooth and natural
-- [ ] Mobile access working on demo device
-- [ ] Backup plan ready if live demo fails
+---
 
-### Reusable Template Creation
-- [ ] Terraform modules documented and tagged
-- [ ] n8n workflow templates exported and saved
-- [ ] Airtable base template created
-- [ ] One-command deployment script tested
-- [ ] README created for template usage
-
-### Post-Demo Activities
-- [ ] Demo data cleared from production systems
-- [ ] Cloud costs reviewed and optimized
-- [ ] Feedback documented for template improvements
-- [ ] Template repository organized for future hackathons
+**Implementation Notes:**
+- Each checkbox represents a discrete technical task
+- Reference `docs/SPRINT_PLAN.md` for timeline and strategic context
+- See `docs/TECHNICAL_SPEC.md` for detailed implementation requirements
+- Run `./enforce-docs.sh` to validate documentation consistency

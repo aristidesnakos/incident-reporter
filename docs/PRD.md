@@ -7,9 +7,9 @@ Native voice-to-voice conversational AI safety companion that eliminates reporti
 ### Success Metrics
 - **Primary**: Incident reporting time: 5 minutes → 30 seconds via natural conversation
 - **Secondary**: Worker participation rate: 20% → 80% through improved UX
-- **Technical**: 95% voice transcription accuracy, <3 second conversational response time
-- **Conversational**: Natural voice interactions feel human-like (ElevenLabs + Gemini)
-- **Development**: 24-hour implementation vs 72-hour traditional development
+- **Technical**: 95% voice conversation accuracy, <2 second response time 
+- **Conversational**: Natural voice interactions feel human-like (ElevenLabs Conversational AI)
+- **Development**: 12-hour implementation vs 24-hour traditional development
 
 ### Target User
 Construction workers on active job sites who need to report safety incidents quickly without removing gloves or navigating complex forms.
@@ -23,11 +23,11 @@ I want to have natural voice conversations with an AI safety companion
 So that I can quickly report incidents through natural speech without forms or typing
 
 Acceptance Criteria:
-- QR code leads to conversational Telegram bot
+- Workers access conversational Telegram bot via direct link/username
 - Bot accepts voice messages and responds with natural voice
 - Bot asks follow-up questions conversationally via ElevenLabs voice
-- Vertex AI Gemini understands construction safety context
-- Voice transcription accuracy >90% for safety terminology
+- ElevenLabs Conversational AI understands construction safety context
+- Voice conversation accuracy >90% for safety terminology  
 - Complete conversation flow under 60 seconds
 ```
 
@@ -39,10 +39,10 @@ So that I can respond to critical issues immediately with proper context
 
 Acceptance Criteria:
 - AI extracts incident details through conversational prompts
-- EMERGENCY: Auto-email alert within 30 seconds
+- EMERGENCY: Auto-notification via Telegram within 30 seconds
 - URGENT: Telegram alert within 5 minutes  
 - ROUTINE: Added to daily dashboard
-- 90% accurate urgency classification via Gemini conversation
+- 90% accurate urgency classification via ElevenLabs Conversational AI
 - Natural follow-up questions improve data quality
 ```
 
@@ -93,7 +93,7 @@ Acceptance Criteria:
 ### Definition of Done
 - End-to-end voice-to-voice reporting works through ElevenLabs Conversational Agent
 - Natural voice conversations feel human-like using native ElevenLabs capabilities
-- Emergency incidents trigger email alerts within 30 seconds
+- Emergency incidents trigger Telegram alerts within 30 seconds
 - Airtable dashboard shows real-time incident data with conversation transcripts
 - System handles 10 concurrent voice conversations
 - Demo-ready with seeded test data and sample voice conversations

@@ -18,7 +18,7 @@ echo "read DEVELOPMENT_CHECKLIST.md"
 
 echo ""
 echo "⚠️  REMEMBER: Update DEVELOPMENT_CHECKLIST.md after each completed task!"
-echo "⚠️  REMEMBER: Consult RISK_REGISTER.md if you encounter blockers!"
+echo "⚠️  REMEMBER: Consult TECHNICAL_SPEC.md or PRD.md if you encounter blockers!"
 
 echo ""
 echo "🎯 Current Sprint Status:"
