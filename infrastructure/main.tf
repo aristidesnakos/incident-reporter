@@ -137,7 +137,8 @@ resource "google_project_iam_member" "function_permissions" {
     "roles/storage.admin", 
     "roles/secretmanager.secretAccessor",
     "roles/logging.logWriter",
-    "roles/cloudbuild.builds.builder"
+    "roles/cloudbuild.builds.builder",
+    "roles/iam.serviceAccountUser"
   ])
   
   project = var.project_id
