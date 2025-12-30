@@ -259,7 +259,6 @@ resource "google_cloudfunctions2_function" "telegram_handler" {
   build_config {
     runtime           = "python311"
     entry_point       = "telegram_handler"
-    service_account   = google_service_account.function_service_account.name
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
@@ -269,7 +268,7 @@ resource "google_cloudfunctions2_function" "telegram_handler" {
   }
 
   service_config {
-    max_instance_count = 100
+    max_instance_count = 10
     min_instance_count = 0
     available_memory   = "512Mi"
     timeout_seconds    = 60
@@ -330,7 +329,6 @@ resource "google_cloudfunctions2_function" "airtable_sync" {
   build_config {
     runtime           = "python311"
     entry_point       = "airtable_sync"
-    service_account   = google_service_account.function_service_account.name
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
@@ -399,7 +397,6 @@ resource "google_cloudfunctions2_function" "followup_scheduler" {
   build_config {
     runtime           = "python311"
     entry_point       = "followup_scheduler"
-    service_account   = google_service_account.function_service_account.name
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name

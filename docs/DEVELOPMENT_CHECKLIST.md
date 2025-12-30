@@ -5,10 +5,12 @@
 
 ### Infrastructure Deployment
 - [x] Terraform infrastructure template (`./deploy.sh` script created)
+- [x] Google Cloud SDK installed and configured
 - [x] Telegram bot token obtained from @BotFather
-- [x] ElevenLabs Conversational AI agent created
-- [ ] Cloud Functions deployed to GCP (blocked - Google Cloud SDK required)
+- [x] ElevenLabs Conversational AI agent created with safety prompt
 - [x] Airtable base configured
+- [x] Terraform infrastructure 95% deployed (Firestore, Secret Manager, Storage, IAM)
+- [ ] Cloud Functions deployment (blocked - missing default Compute Engine service account)
 - [ ] Telegram webhook connected
 
 ### Core Voice Processing
