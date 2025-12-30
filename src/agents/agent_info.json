@@ -1,0 +1,12 @@
+{
+  "agent_id": "agent_7101kdqt94dqeegsxsqhp8dy3b0k",
+  "name": "Digital Foreman Safety Agent",
+  "voice_id": "21m00Tcm4TlvDq8ikWAM",
+  "model": "eleven_flash_v2",
+  "created_timestamp": null,
+  "tags": [
+    "safety",
+    "construction",
+    "incident-reporting"
+  ]
+}

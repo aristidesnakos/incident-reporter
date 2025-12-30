@@ -54,7 +54,7 @@ if [ ! -f "terraform.tfvars" ]; then
     echo "   - telegram_bot_token: from @BotFather"
     echo "   - elevenlabs_api_key: from elevenlabs.io" 
     echo "   - elevenlabs_agent_id: from ./scripts/setup_agent.sh"
-    echo "   - airtable_api_key: from airtable.com"
+    echo "   - airtable_pat: from airtable.com"
     echo "   - airtable_base_id: from your Airtable base URL"
     echo ""
     echo "Run this script again after editing terraform.tfvars"

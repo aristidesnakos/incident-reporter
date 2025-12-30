@@ -51,7 +51,7 @@ variable "elevenlabs_agent_id" {
 }
 
 
-variable "airtable_api_key" {
+variable "airtable_pat" {
   description = "Airtable API Key"
   type        = string
   sensitive   = true
@@ -185,7 +185,7 @@ resource "google_secret_manager_secret_version" "elevenlabs_agent_id" {
 }
 
 
-resource "google_secret_manager_secret" "airtable_api_key" {
+resource "google_secret_manager_secret" "airtable_pat" {
   secret_id = "airtable-api-key"
   
   replication {
@@ -193,9 +193,9 @@ resource "google_secret_manager_secret" "airtable_api_key" {
   }
 }
 
-resource "google_secret_manager_secret_version" "airtable_api_key" {
-  secret      = google_secret_manager_secret.airtable_api_key.id
-  secret_data = var.airtable_api_key
+resource "google_secret_manager_secret_version" "airtable_pat" {
+  secret      = google_secret_manager_secret.airtable_pat.id
+  secret_data = var.airtable_pat
 }
 
 resource "google_secret_manager_secret" "airtable_base_id" {
@@ -351,7 +351,7 @@ resource "google_cloudfunctions2_function" "airtable_sync" {
     secret_environment_variables {
       key        = "AIRTABLE_API_KEY"
       project_id = var.project_id
-      secret     = google_secret_manager_secret.airtable_api_key.secret_id
+      secret     = google_secret_manager_secret.airtable_pat.secret_id
       version    = "latest"
     }
     

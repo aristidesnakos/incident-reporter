@@ -71,7 +71,7 @@ Be conversational, helpful, and focused on safety. Keep responses natural and un
             conversation_config={
                 "tts": {
                     "voice_id": "21m00Tcm4TlvDq8ikWAM",  # Rachel - clear, professional voice
-                    "model_id": "eleven_flash_v2_5",        # Fast, low-latency model
+                    "model_id": "eleven_flash_v2",        # Fast, low-latency model
                     "stability": 0.5,
                     "similarity_boost": 0.75,
                     "style": 0.3,  # Professional but warm

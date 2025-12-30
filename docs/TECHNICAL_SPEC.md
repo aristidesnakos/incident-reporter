@@ -173,10 +173,10 @@ conversation_config={
 
 **External Services Setup:**
 
-#### Telegram Bot (3 minutes)
+#### Telegram Bot (3 minutes) DONE
 1. Message @BotFather in Telegram
-2. Send `/newbot` → name: "Digital Foreman Safety Bot"  
-3. Username: "digitalforeman_safety_bot"
+2. Send `/newbot` → name: "SaifetyBot"  
+3. Username: "SaifetyBot"
 4. Copy bot token for terraform.tfvars
 5. Configure: `/setdescription` - Voice-activated safety incident reporting
 
@@ -199,7 +199,7 @@ project_id = "your-gcp-project-id"
 telegram_bot_token = "1234567890:ABCdefGHIjklMNOpqrsTUVwxyz"  
 elevenlabs_api_key = "sk_1234567890abcdefghijklmnopqrstuvwxyz"
 elevenlabs_agent_id = "agent_1234567890abcdefghijklmnop"
-airtable_api_key = "patABCDEFGHIJKLMNOPQRSTUVWXYZ.1234567890abcdef"
+airtable_pat = "patABCDEFGHIJKLMNOPQRSTUVWXYZ.1234567890abcdef"
 airtable_base_id = "appABCDEFGHIJKLMNOP"
 ```
 

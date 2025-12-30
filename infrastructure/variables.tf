@@ -50,12 +50,12 @@ variable "elevenlabs_agent_id" {
 }
 
 
-variable "airtable_api_key" {
+variable "airtable_pat" {
   description = "Airtable API Key from airtable.com/api"
   type        = string
   sensitive   = true
   validation {
-    condition     = length(var.airtable_api_key) > 0
+    condition     = length(var.airtable_pat) > 0
     error_message = "Airtable API key must not be empty."
   }
 }
