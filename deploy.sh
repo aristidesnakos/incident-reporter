@@ -10,7 +10,7 @@ echo "============================================="
 
 # Check prerequisites
 command -v terraform >/dev/null 2>&1 || { echo "❌ Terraform is required but not installed. Aborting." >&2; exit 1; }
-command -v gcloud >/dev/null 2>&1 || { echo "❌ Google Cloud SDK is required but not installed. Aborting." >&2; exit 1; }
+command -v gcloud >/dev/null 2>&1 || command -v ~/google-cloud-sdk/bin/gcloud >/dev/null 2>&1 || { echo "❌ Google Cloud SDK is required but not installed. Aborting." >&2; exit 1; }
 
 # Get project ID
 if [ -z "$1" ]; then
@@ -37,8 +37,10 @@ read -r
 
 # Set up authentication
 echo "🔐 Setting up Google Cloud authentication..."
-gcloud auth application-default login --quiet || true
-gcloud config set project "$PROJECT_ID"
+# Use gcloud from PATH or fallback to full path
+GCLOUD_CMD=$(command -v gcloud || echo ~/google-cloud-sdk/bin/gcloud)
+$GCLOUD_CMD auth application-default login --quiet || true
+$GCLOUD_CMD config set project "$PROJECT_ID"
 
 # Navigate to infrastructure directory
 cd infrastructure
