@@ -22,4 +22,8 @@ logs/
 .DS_Store
 Thumbs.db
 
+# Terraform
 */terraform.tfvars
+**/.terraform/
+*.tfstate
+*.tfstate.*

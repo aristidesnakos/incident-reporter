@@ -133,10 +133,11 @@ resource "google_service_account" "function_service_account" {
 # IAM roles for function service account
 resource "google_project_iam_member" "function_permissions" {
   for_each = toset([
-    "roles/firestore.user",
-    "roles/storage.admin",
-    "roles/secretmanager.accessor",
-    "roles/logging.logWriter"
+    "roles/datastore.user",
+    "roles/storage.admin", 
+    "roles/secretmanager.secretAccessor",
+    "roles/logging.logWriter",
+    "roles/cloudbuild.builds.builder"
   ])
   
   project = var.project_id
@@ -256,8 +257,9 @@ resource "google_cloudfunctions2_function" "telegram_handler" {
   description = "Handles Telegram voice messages and routes to ElevenLabs agent"
 
   build_config {
-    runtime     = "python311"
-    entry_point = "telegram_handler"
+    runtime           = "python311"
+    entry_point       = "telegram_handler"
+    service_account   = google_service_account.function_service_account.name
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
@@ -326,8 +328,9 @@ resource "google_cloudfunctions2_function" "airtable_sync" {
   description = "Syncs incident data from Firestore to Airtable"
 
   build_config {
-    runtime     = "python311"
-    entry_point = "airtable_sync"
+    runtime           = "python311"
+    entry_point       = "airtable_sync"
+    service_account   = google_service_account.function_service_account.name
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
@@ -394,8 +397,9 @@ resource "google_cloudfunctions2_function" "followup_scheduler" {
   description = "Scheduled function to send follow-up messages for unresolved incidents"
 
   build_config {
-    runtime     = "python311"
-    entry_point = "followup_scheduler"
+    runtime           = "python311"
+    entry_point       = "followup_scheduler"
+    service_account   = google_service_account.function_service_account.name
     source {
       storage_source {
         bucket = google_storage_bucket.function_source.name
