@@ -1,112 +1,112 @@
 # Sprint Planning & Roadmap
-## Digital Foreman MVP - 24 Hour No-Code Development Plan
+## Digital Foreman MVP - 12 Hour Conversational AI Development Plan
 
-### Sprint 0: Infrastructure Setup (2 hours)
-**Goal**: Complete infrastructure deployment using reusable templates
+### Sprint 0: Infrastructure Setup (1.5 hours)
+**Goal**: Complete serverless infrastructure deployment using reusable templates
 
 **Tasks:**
-- [ ] Create Telegram bot via @BotFather (15 min)
-- [ ] Deploy Terraform infrastructure template (45 min)
-  - GCP project with required APIs (including Vertex AI)
+- [ ] Create Telegram bot via @BotFather (10 min)
+- [ ] Deploy Terraform infrastructure template (30 min)
+  - GCP project with required APIs (Cloud Functions, Firestore)
   - Firestore database + Cloud Storage
   - Service accounts with proper IAM
-- [ ] Deploy n8n instance on Cloud Run (30 min)
-- [ ] Set up Airtable base from template (15 min)
-- [ ] Configure ElevenLabs API credentials (10 min)
-- [ ] Configure Gmail email credentials (5 min)
+- [ ] Create ElevenLabs Conversational AI Agent (20 min)
+- [ ] Set up Airtable base from template (10 min)
+- [ ] Configure Gmail API credentials (10 min)
+- [ ] Deploy Cloud Functions (10 min)
 
-**Definition of Done**: All infrastructure deployed, n8n accessible, Airtable ready
-
----
-
-### Sprint 1: Conversational Voice Pipeline (8 hours)
-
-#### Hour 1-4: Voice Input Processing
-**Assignee**: Workflow Engineer
-
-**Tasks:**
-- [ ] Telegram webhook → n8n workflow setup (1h)
-- [ ] Voice file download and conversion nodes (1h)
-- [ ] Vertex AI Speech-to-Text integration (1h)
-- [ ] Test voice message → transcript flow (1h)
-
-**Definition of Done**: Voice messages converted to text in n8n
-
-#### Hour 5-8: AI Conversation & Voice Response
-**Assignee**: AI Engineer
-
-**Tasks:**
-- [ ] Vertex AI Gemini conversational prompt setup (2h)
-- [ ] ElevenLabs text-to-speech integration via n8n (2h)
-- [ ] Incident classification within conversation flow (1h)
-- [ ] Firestore write operations from n8n (1h)
-- [ ] Emergency email trigger via Gmail node (1h)
-- [ ] Voice confirmation response via ElevenLabs (1h)
-
-**Definition of Done**: Voice → AI Conversation → Voice Response + Database working
+**Definition of Done**: All infrastructure deployed, ElevenLabs agent created, Airtable ready
 
 ---
 
-### Sprint 2: Intelligence & Dashboard (8 hours)
+### Sprint 1: Conversational Voice Pipeline (4 hours)
 
-#### Hour 9-12: Conversational Intelligence Enhancement
+#### Hour 1-2: ElevenLabs Agent Integration
 **Assignee**: AI Engineer
 
 **Tasks:**
-- [ ] Enhanced Gemini prompts for natural conversation (2h)
-- [ ] Construction safety terminology integration (1h)
-- [ ] Voice personality and tone optimization (1h)
+- [ ] Configure ElevenLabs agent with safety prompt (30 min)
+- [ ] Test agent voice conversations (30 min)
+- [ ] Implement Cloud Function webhook handler (30 min)
+- [ ] Connect Telegram → ElevenLabs agent flow (30 min)
 
-**Definition of Done**: Natural voice conversations with >90% classification accuracy
+**Definition of Done**: Voice messages trigger ElevenLabs conversations
 
-#### Hour 13-16: Dashboard & Follow-up Automation
+#### Hour 3-4: Data Pipeline & Alerts
+**Assignee**: Backend Engineer
+
+**Tasks:**
+- [ ] Extract structured data from agent responses (30 min)
+- [ ] Implement Firestore storage (30 min)
+- [ ] Emergency email alerts via Gmail (30 min)
+- [ ] Test end-to-end voice → database flow (30 min)
+
+**Definition of Done**: Voice → ElevenLabs → Database + Alerts working
+
+---
+
+### Sprint 2: Dashboard & Automation (4 hours)
+
+#### Hour 5-6: Real-time Dashboard
 **Assignee**: Dashboard Engineer
 
 **Tasks:**
-- [ ] n8n → Airtable sync workflow (1h)
-- [ ] Airtable views for urgency filtering (1h)
-- [ ] Scheduled follow-up workflow in n8n (2h)
+- [ ] Cloud Function → Airtable sync (30 min)
+- [ ] Airtable views for urgency filtering (30 min)
+- [ ] Test real-time data flow (30 min)
+- [ ] Mobile dashboard optimization (30 min)
 
-**Definition of Done**: Real-time dashboard showing incidents, automated follow-ups
+**Definition of Done**: Real-time incident dashboard operational
+
+#### Hour 7-8: Follow-up Automation
+**Assignee**: AI Engineer
+
+**Tasks:**
+- [ ] Cloud Scheduler for follow-ups (30 min)
+- [ ] ElevenLabs agent follow-up conversations (30 min)
+- [ ] Firestore status updates (30 min)
+- [ ] Test automated follow-up flow (30 min)
+
+**Definition of Done**: Automated 24h follow-ups via voice
 
 ---
 
-### Sprint 3: Testing & Demo Preparation (6 hours)
+### Sprint 3: Testing & Demo Preparation (2.5 hours)
 
-#### Hour 17-22: End-to-End Testing & Polish
+#### Hour 9-11.5: End-to-End Testing & Demo Prep
 **Assignee**: All Team
 
 **Tasks:**
-- [ ] End-to-end workflow testing (2h)
-- [ ] Performance optimization in n8n (1h)
-- [ ] Demo data preparation (1h)
-- [ ] Demo script rehearsal (1h)
-- [ ] Backup plan testing (1h)
+- [ ] End-to-end voice conversation testing (45 min)
+- [ ] Performance optimization (30 min)
+- [ ] Demo data preparation (30 min)
+- [ ] Demo script rehearsal (30 min)
+- [ ] Backup plan documentation (15 min)
 
-**Definition of Done**: Successful demo run with contingencies tested
+**Definition of Done**: Demo ready with tested backup plan
 
 ### Progress Checkpoints
-- **Hour 2**: Infrastructure fully deployed
-- **Hour 8**: Voice → AI → Database pipeline working
-- **Hour 16**: Dashboard live with real-time data
-- **Hour 22**: Demo ready with backup plan
+- **Hour 1.5**: Infrastructure fully deployed
+- **Hour 4**: Voice → ElevenLabs → Database pipeline working
+- **Hour 8**: Dashboard live with automated follow-ups
+- **Hour 11.5**: Demo ready with backup plan
 
 ### Scope Protection Rules
-1. **No custom code** - use n8n nodes and pre-built services only
-2. **Template-first approach** - leverage existing workflow templates
-3. **Demo over perfection** - working demo beats complex features
-4. **Ask PM before** any architecture changes
+1. **Minimal custom code** - leverage ElevenLabs agent + Cloud Functions only
+2. **Template-first approach** - create reusable Cloud Function templates
+3. **Demo over perfection** - working voice demo beats complex features
+4. **Native voice conversations** - ElevenLabs handles all voice processing
 
 ### Reusable Hackathon Template
 This project creates reusable components for future hackathons:
 
 **Infrastructure Template** (`/infrastructure`):
-- Terraform modules for GCP + Firestore setup
-- n8n deployment on Cloud Run
+- Terraform modules for GCP + Cloud Functions setup
+- Firestore and Cloud Storage configuration
 - Service account configurations
 
-**Workflow Templates** (`/workflows`):
-- Conversational voice pipeline (Telegram → Speech-to-Text → Gemini → ElevenLabs → Database)
+**Function Templates** (`/functions`):
+- Voice conversation handler (Telegram → ElevenLabs Agent → Database)
 - Email alerting with Gmail
 - Automated follow-up scheduling with voice responses
 - Database sync to external dashboards

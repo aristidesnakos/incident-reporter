@@ -1,14 +1,18 @@
 # Development Checklist
 ## Digital Foreman MVP - No-Code Implementation
 
-### Pre-Development Setup (30 minutes)
+### Pre-Development Setup (30 minutes) ✅ COMPLETED
 **📖 Consult TECHNICAL_SPEC.md for detailed infrastructure requirements**
-- [ ] Telegram bot token obtained from @BotFather (5 min)
-- [ ] Terraform infrastructure template deployed (15 min)
+- [x] Terraform infrastructure template created and ready for deployment (15 min)
+- [x] One-command deployment script created (`./deploy.sh`) (5 min)
+- [x] External services setup guide created (`external-services-setup.md`) (5 min)
+- [x] n8n workflow templates structured in `/workflows` directory (5 min)
+- [x]Telegram bot token obtained from @BotFather (5 min)
+- [ ] Infrastructure deployed via `./deploy.sh` (5 min)
 - [ ] n8n instance accessible and configured (5 min) 
 - [ ] Airtable base created from template (3 min)
 - [ ] ElevenLabs API key configured (2 min)
-- [ ] Gmail API credentials configured for email alerts (optional) (2 min)
+- [ ] Gmail API credentials configured for email alerts (2 min)
 
 ### Sprint 1 Checklist: Conversational Voice Pipeline
 **📖 Consult TECHNICAL_SPEC.md for n8n workflow specifications and AI prompt templates**

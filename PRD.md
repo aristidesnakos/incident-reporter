@@ -1,8 +1,8 @@
 # Product Requirements Document (PRD)
-## Digital Foreman MVP - No-Code Voice Safety Reporter
+## Digital Foreman MVP - Conversational AI Voice Safety Reporter
 
 ### Product Vision
-Conversational AI safety companion built entirely with no-code tools that eliminates reporting friction through natural voice conversations via Telegram bot. Uses ElevenLabs + Google Cloud Vertex AI to create human-like interactions for incident reporting, while creating reusable templates for future hackathons.
+Native voice-to-voice conversational AI safety companion that eliminates reporting friction through natural speech interactions via Telegram bot. Uses ElevenLabs Conversational AI Agent API + Google Cloud Functions to create human-like voice interactions for incident reporting, while creating reusable templates for future hackathons.
 
 ### Success Metrics
 - **Primary**: Incident reporting time: 5 minutes → 30 seconds via natural conversation
@@ -58,14 +58,14 @@ Acceptance Criteria:
 - Escalation if no response after 48h
 ```
 
-#### Epic 4: No-Code Dashboard
+#### Epic 4: Real-Time Dashboard
 ```
 As a project manager
 I want a real-time view of safety incidents via Airtable
 So that I can track resolution status without custom development
 
 Acceptance Criteria:
-- Live incident data synced from n8n workflows
+- Live incident data synced from Cloud Functions
 - Pre-built Airtable views for urgency filtering
 - Native mobile access via Airtable app
 - Real-time updates without refresh
@@ -73,16 +73,16 @@ Acceptance Criteria:
 ```
 
 ### Technical Innovation Goals
-- **Conversational AI Integration**: ElevenLabs + Google Cloud Vertex AI via n8n HTTP nodes
-- **No-Code First**: Zero custom application code - only visual n8n workflows
+- **Native Voice Conversations**: ElevenLabs Conversational AI Agent handles voice-to-voice natively
+- **Serverless Architecture**: Google Cloud Functions + ElevenLabs Agent (no complex orchestration)
 - **Infrastructure as Code**: Terraform templates for one-command deployment
 - **Reusable Templates**: Create hackathon starter kit for voice/conversational AI projects
-- **Natural Voice UX**: Human-like personality and voice using ElevenLabs synthesis
-- **Rapid MVP**: Demonstrate 67% faster development time vs traditional approach
+- **Natural Voice UX**: Human-like personality using ElevenLabs conversational agent
+- **Rapid MVP**: Demonstrate 80% faster development time vs traditional approach
 
 ### Out of Scope (V1)
 - Custom React dashboard (replaced with Airtable)
-- Complex backend APIs (replaced with n8n workflows)  
+- Complex workflow orchestration (replaced with ElevenLabs agent + Cloud Functions)
 - Integration with Procore/ACC APIs
 - Smart helmet hardware
 - Photo attachments
@@ -91,10 +91,10 @@ Acceptance Criteria:
 - User management system beyond Telegram authentication
 
 ### Definition of Done
-- End-to-end conversational voice reporting works through n8n workflows
-- Natural voice conversations via ElevenLabs + Gemini feel human-like
+- End-to-end voice-to-voice reporting works through ElevenLabs Conversational Agent
+- Natural voice conversations feel human-like using native ElevenLabs capabilities
 - Emergency incidents trigger email alerts within 30 seconds
 - Airtable dashboard shows real-time incident data with conversation transcripts
-- System handles 10 concurrent conversational workflow executions
+- System handles 10 concurrent voice conversations
 - Demo-ready with seeded test data and sample voice conversations
-- **Bonus**: Reusable conversational AI template documented for future hackathons
+- **Bonus**: Reusable ElevenLabs + Cloud Functions template documented for future hackathons

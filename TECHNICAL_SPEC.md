@@ -1,21 +1,19 @@
 # Technical Specification
-## Digital Foreman MVP - No-Code Architecture
+## Digital Foreman MVP - Serverless Conversational AI Architecture
 
 ### Architecture Overview
 ```
-Telegram Bot → n8n Webhook → Speech-to-Text → Gemini Conversation → ElevenLabs Voice → Firestore → Airtable Dashboard
+Telegram Bot → Cloud Function Webhook → ElevenLabs Conversational AI Agent → Firestore → Cloud Function → Airtable Dashboard
 ```
 
 ### Technology Stack
-- **Workflow Engine**: n8n (self-hosted on Cloud Run)
-- **Bot Platform**: Telegram Bot API (via n8n Telegram nodes)
-- **AI Conversation**: Vertex AI Gemini 1.5 Flash (via n8n HTTP nodes)
-- **Voice Synthesis**: ElevenLabs API (via n8n HTTP nodes)
-- **Speech Recognition**: Vertex AI Speech-to-Text (via n8n HTTP nodes)
-- **Database**: Firestore (via n8n Google Firestore nodes)
-- **Storage**: Cloud Storage (via n8n Google Cloud Storage nodes)
-- **Dashboard**: Airtable (via n8n Airtable nodes)
-- **Notifications**: Gmail API (via n8n Gmail nodes)
+- **Voice AI**: ElevenLabs Conversational AI Agent (native voice-to-voice)
+- **Bot Platform**: Telegram Bot API (via Cloud Functions)
+- **Backend**: Google Cloud Functions (serverless, event-driven)
+- **Database**: Firestore (document database)
+- **Storage**: Cloud Storage (audio conversation logs)
+- **Dashboard**: Airtable (real-time incident tracking)
+- **Notifications**: Gmail API (emergency alerts)
 - **Infrastructure**: Terraform for repeatable deployments
 
 ### Data Models
@@ -56,165 +54,205 @@ Telegram Bot → n8n Webhook → Speech-to-Text → Gemini Conversation → Elev
 }
 ```
 
-### n8n Workflow Specifications
+### Cloud Function Specifications
 
-#### 1. Conversational Voice Processing Workflow
+#### 1. Telegram Voice Handler (`telegram-voice-handler`)
 ```
-Trigger: Telegram Webhook
+Trigger: HTTP request from Telegram webhook
 ↓
-Download Voice File (Telegram node)
+Receive voice message from Telegram
 ↓
-Convert Audio Format (HTTP node to external service)
+Forward to ElevenLabs Conversational AI Agent
+├── Agent handles speech-to-text
+├── Agent processes conversation with safety prompt
+├── Agent classifies incident urgency
+└── Agent generates voice response
 ↓
-Speech-to-Text (HTTP node to Vertex AI)
+Receive agent response (voice + structured data)
 ↓
-Conversational AI Processing (HTTP node to Vertex AI Gemini)
-├── Initial incident understanding
-├── Follow-up questions generation
-└── Classification within conversation
+Store conversation in Firestore
 ↓
-Generate Voice Response (HTTP node to ElevenLabs)
-↓
-Send Voice Response (Telegram node with audio)
-↓
-Store Conversation in Firestore (Google Firestore node)
-↓
-Route by Urgency (If/Switch node)
-├── Emergency → Send Email Alert (Gmail node)
-├── Urgent → Send Telegram Alert  
+Route by urgency classification
+├── Emergency → Trigger email alert
+├── Urgent → Send Telegram notification
 └── Routine → Log only
 ↓
-Continue Conversation Loop (if needed)
+Send voice response back via Telegram
 ```
 
-#### 2. Conversational Follow-up Automation Workflow
+#### 2. Follow-up Scheduler (`followup-scheduler`)
 ```
-Trigger: Schedule (every 24 hours)
+Trigger: Cloud Scheduler (every 24 hours)
 ↓
-Query Unresolved Incidents (Google Firestore node)
+Query unresolved incidents from Firestore
 ↓
-For Each Open Incident (Loop node)
-├── Check Time Since Reported
-├── Generate Personalized Follow-up (Gemini HTTP node)
-├── Create Voice Follow-up (ElevenLabs HTTP node)
-├── Send Voice Follow-up Message (Telegram node)
-└── Update Follow-up Count (Google Firestore node)
+For each open incident:
+├── Check time since last contact
+├── Create follow-up conversation with ElevenLabs agent
+├── Send voice follow-up via Telegram
+└── Update follow-up count in Firestore
 ```
 
-#### 3. Dashboard Sync Workflow  
+#### 3. Airtable Sync (`airtable-sync`)
 ```
-Trigger: Firestore Changes (Webhook)
+Trigger: Firestore document changes
 ↓
-Transform Data (Code node)
+Receive Firestore change event
 ↓
-Update Airtable Record (Airtable node)
+Transform incident data for Airtable
+↓
+Update/create Airtable record
 ```
 
-### AI Conversational Prompt Template
+### ElevenLabs Conversational AI Agent Configuration
+
+#### Agent Prompt Template
 ```
-You are a helpful safety companion for construction workers. Have a natural conversation to understand the safety incident they're reporting.
+You are Rachel, a friendly and efficient safety companion for construction workers. Your role is to help workers report safety incidents through natural voice conversation.
 
-User input: {{$json.transcript}}
+Your responsibilities:
+1. Listen to incident reports with empathy and understanding
+2. Ask clarifying questions naturally to gather complete information
+3. Classify incident urgency (emergency/urgent/routine) based on severity
+4. Provide immediate safety guidance when appropriate
+5. Keep conversations under 60 seconds total
 
-Your response should:
-1. Acknowledge their report with empathy
-2. Ask clarifying questions if needed (location, severity, people affected)
-3. Provide immediate safety guidance if appropriate
-4. Extract incident details naturally through conversation
+Conversation Guidelines:
+- Use construction-friendly language, not corporate speak
+- Be patient and understanding - workers may be stressed
+- Ask one question at a time to avoid overwhelming them
+- Emergency = injury occurred, immediate danger, serious hazard
+- Urgent = could cause injury within hours, equipment failure  
+- Routine = general safety observation, minor maintenance issue
 
-Then classify the incident:
+First message: "Hi, this is Rachel from Digital Foreman safety. I'm here to help you report any safety concerns. What's going on?"
+
+After each conversation, provide structured data in this format:
 {
   "urgency": "emergency|urgent|routine",
-  "type": "injury|near-miss|hazard|equipment",  
-  "location": "extracted location or 'unknown'",
+  "type": "injury|near-miss|hazard|equipment",
+  "location": "extracted location",
+  "description": "incident summary",
   "confidence": 0.0-1.0,
-  "conversation_quality": 0.0-1.0,
-  "next_question": "follow-up question if needed",
-  "ai_response": "natural conversational response",
   "requires_followup": true|false
 }
+```
 
-Conversation Rules:
-- Keep responses under 30 seconds when spoken
-- Use construction-friendly language (not corporate speak)
-- Emergency = injury occurred, immediate danger, or serious hazard
-- Urgent = could cause injury within hours, equipment failure
-- Routine = general safety observation, minor issue
-
-Be conversational, helpful, and focused on safety.
+#### Voice Configuration
+```python
+# ElevenLabs agent configuration via create_agent.py script
+conversation_config={
+    "tts": {
+        "voice_id": "21m00Tcm4TlvDq8ikWAM",  # Rachel - clear, professional
+        "model_id": "eleven_flash_v2_5",     # Latest low-latency model
+        "stability": 0.5,
+        "similarity_boost": 0.75,
+        "style": 0.3,  # Professional but warm
+        "use_speaker_boost": True
+    },
+    "agent": {
+        "first_message": "Hi, this is Rachel from Digital Foreman safety...",
+        "prompt": { "prompt": safety_prompt },
+        "language": "en"
+    },
+    "asr": {
+        "model": "nova-2",  # Latest speech recognition
+        "language": "en"
+    }
+}
 ```
 
 ### Infrastructure Requirements
 **Terraform Template Provisions:**
 - Google Cloud Project with required APIs enabled
+- Cloud Functions for serverless execution
 - Firestore database with security rules
 - Cloud Storage bucket with lifecycle policies
-- Cloud Run instance for n8n deployment
+- Cloud Scheduler for follow-up automation
 - Service accounts with minimal IAM permissions
 
 **External Services:**
 - Telegram Bot token from @BotFather
-- ElevenLabs API key for voice synthesis
+- ElevenLabs Conversational AI Agent ID + API key
 - Gmail API credentials for email alerts
 - Airtable workspace and base
 
 ### Terraform Infrastructure Template
 ```hcl
 # /infrastructure/main.tf
-module "gcp_base" {
-  source = "./modules/gcp-base"
-  project_id = var.project_id
-  region = var.region
+# Cloud Functions for serverless voice processing
+resource "google_cloudfunctions2_function" "telegram_handler" {
+  name        = "telegram-voice-handler"
+  location    = var.region
+  description = "Handles Telegram voice messages via ElevenLabs agent"
+  
+  build_config {
+    runtime     = "python311"
+    entry_point = "telegram_handler"
+    source {
+      storage_source {
+        bucket = google_storage_bucket.function_source.name
+        object = google_storage_bucket_object.function_source.name
+      }
+    }
+  }
 }
 
-module "n8n_deployment" {
-  source = "./modules/n8n-cloud-run"
-  project_id = var.project_id
-  region = var.region
+# Firestore database
+resource "google_firestore_database" "database" {
+  project     = var.project_id
+  name        = "(default)"
+  location_id = var.region
+  type        = "FIRESTORE_NATIVE"
 }
 
-module "firestore_setup" {
-  source = "./modules/firestore"
-  project_id = var.project_id
+# Cloud Storage for audio files
+resource "google_storage_bucket" "audio_files" {
+  name     = "incident-reporter-audio-${random_id.suffix.hex}"
+  location = var.region
+  
+  lifecycle_rule {
+    condition {
+      age = 7
+    }
+    action {
+      type = "Delete"
+    }
+  }
 }
 ```
 
-### n8n Deployment Configuration
-```yaml
-# n8n on Cloud Run with persistent data
-apiVersion: serving.knative.dev/v1
-kind: Service
-spec:
-  template:
-    metadata:
-      annotations:
-        run.googleapis.com/cloudsql-instances: n8n-postgres
-    spec:
-      containers:
-      - image: n8nio/n8n:latest
-        env:
-        - name: N8N_DATABASE_TYPE
-          value: postgresdb
+### Cloud Functions Configuration
+```python
+# /functions/main.py
+@functions_framework.http
+def telegram_handler(request: Request) -> tuple[str, int]:
+    """Handle Telegram voice messages via ElevenLabs agent"""
+    # Parse Telegram webhook
+    # Download voice file
+    # Process via ElevenLabs Conversational AI Agent
+    # Store incident in Firestore
+    # Send voice response back
 ```
 
 ### Security Considerations
-- n8n runs in isolated Cloud Run container
-- Credentials stored in Secret Manager
-- No custom code = reduced attack surface
-- Audio files auto-deleted via Cloud Storage lifecycle
+- Cloud Functions run in isolated serverless environment
+- All credentials stored in Secret Manager
+- Minimal custom code = reduced attack surface  
+- Audio conversation logs auto-deleted via Cloud Storage lifecycle
 - Firestore security rules limit data access
-- Rate limiting on webhook endpoints via n8n
+- Rate limiting on webhook endpoints via Cloud Functions
 
 ### Performance Requirements
-- Conversational response time: <3 seconds (speech-to-text → Gemini → ElevenLabs → response)
-- Voice synthesis quality: Clear, natural speech via ElevenLabs
+- Voice-to-voice response time: <2 seconds (native ElevenLabs processing)
+- Voice quality: Human-like conversation via ElevenLabs Conversational AI
 - Dashboard load time: <1 second (Airtable native performance)
-- Support 10 concurrent conversational workflows
-- 99% uptime via Cloud Run auto-scaling
+- Support 50+ concurrent voice conversations
+- 99.9% uptime via Cloud Functions auto-scaling
 
 ### Monitoring
-- n8n conversational workflow execution metrics via built-in monitoring
-- Cloud Run metrics (CPU, memory, request latency)
-- Vertex AI API usage and latency (Speech-to-Text + Gemini)
-- ElevenLabs API usage and voice generation success rate
-- Airtable sync success rate for conversation data
+- Cloud Functions execution metrics (invocations, duration, errors)
+- ElevenLabs Conversational AI usage and success rates
+- Firestore read/write operations
+- Telegram webhook delivery success
+- Airtable sync success rate for incident data

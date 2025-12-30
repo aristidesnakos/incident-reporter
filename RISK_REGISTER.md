@@ -1,49 +1,49 @@
 # Risk Register & Mitigation
-## Digital Foreman MVP - No-Code Architecture
+## Digital Foreman MVP - Serverless Conversational AI Architecture
 
 ### High Priority Risks
 
 #### Risk 1: Demo Day Technical Failure
-**Probability**: Medium  
+**Probability**: Low  
 **Impact**: High  
-**Description**: Live demo fails during presentation due to n8n workflow errors or service outages
+**Description**: Live demo fails during presentation due to Cloud Function errors or ElevenLabs service outages
 
 **Mitigation Strategies**:
 - Pre-recorded backup demo video ready
-- Local n8n instance as backup to Cloud Run
-- Demo rehearsal with full end-to-end testing
+- ElevenLabs agent tested thoroughly in advance
+- Demo rehearsal with full end-to-end voice testing
 - Static demo data seeded in Airtable
-- n8n workflow export/import for quick recovery
+- Cloud Functions have built-in retry mechanisms
 
 **Owner**: Product Manager  
 **Status**: Open
 
-#### Risk 2: n8n Workflow Reliability
-**Probability**: Medium  
-**Impact**: High  
-**Description**: n8n workflows fail or become unreliable under load or with complex routing
+#### Risk 2: ElevenLabs Agent Reliability
+**Probability**: Low  
+**Impact**: Medium  
+**Description**: ElevenLabs Conversational AI agent fails or becomes unresponsive during demo
 
 **Mitigation Strategies**:
-- Build error handling nodes in all workflows
-- Test workflows with various input scenarios
-- Keep workflows simple (avoid complex branching)
-- Enable n8n execution logging and monitoring
-- Create manual fallback procedures
+- Test agent extensively with various voice inputs
+- Monitor ElevenLabs service status before demo
+- Have backup agent ID ready if needed
+- Keep conversations simple and focused
+- Fallback to text-based responses if voice fails
 
-**Owner**: Workflow Engineer  
+**Owner**: AI Engineer  
 **Status**: Open
 
 #### Risk 3: External Service Dependencies
-**Probability**: Medium  
-**Impact**: High  
-**Description**: Telegram, Vertex AI, Airtable, or Gmail API outages during demo
+**Probability**: Low  
+**Impact**: Medium  
+**Description**: Telegram, ElevenLabs, Airtable, or Gmail API outages during demo
 
 **Mitigation Strategies**:
-- Test with multiple external services before demo
-- Have API keys ready for backup email services
+- Test all external services before demo
+- Monitor ElevenLabs, Telegram status pages day of demo
 - Use Airtable offline/manual data entry as backup
-- Keep simple SMS option available (less dependencies)
-- Monitor service status pages day of demo
+- Have backup email service configured
+- ElevenLabs has 99.9% uptime SLA
 
 **Owner**: Infrastructure Engineer  
 **Status**: Open
@@ -51,31 +51,31 @@
 ### Medium Priority Risks
 
 #### Risk 4: Google Cloud Cost Overrun
-**Probability**: Low  
-**Impact**: Medium  
-**Description**: Unexpected charges from Vertex AI API usage during development/demo
+**Probability**: Very Low  
+**Impact**: Low  
+**Description**: Unexpected charges from Cloud Functions or ElevenLabs usage during development/demo
 
 **Mitigation Strategies**:
-- Set up billing alerts at $25, $50, $100
-- Monitor API usage via Cloud Console
-- Use Gemini Flash (cheaper) instead of Pro
-- Limit demo to controlled test scenarios
-- Use Free Tier where possible
+- Set up billing alerts at $10, $25, $50
+- Monitor Cloud Functions usage via Cloud Console
+- ElevenLabs free tier covers development needs
+- Serverless architecture = pay-per-use only
+- Estimated total cost <$5 for 24h development
 
 **Owner**: Infrastructure Engineer  
 **Status**: Open
 
-#### Risk 5: No-Code Platform Limitations
-**Probability**: Medium  
-**Impact**: Medium  
-**Description**: n8n or Airtable can't handle required functionality or integrations
+#### Risk 5: Cloud Function Integration Complexity
+**Probability**: Low  
+**Impact**: Low  
+**Description**: Cloud Functions integration with ElevenLabs or Airtable becomes complex
 
 **Mitigation Strategies**:
-- Test all required integrations early in Sprint 1
-- Keep scope simple - prioritize core functionality
+- Use well-documented APIs (ElevenLabs, Airtable)
+- Keep function code simple and focused
+- Test integrations early with minimal viable code
+- Leverage existing Python libraries
 - Have manual workarounds documented
-- Accept reduced functionality over custom code
-- Research alternative no-code tools as backup
 
 **Owner**: Template Architect  
 **Status**: Open
@@ -96,68 +96,70 @@
 
 ### Low Priority Risks
 
-#### Risk 7: Voice Transcription Accuracy
-**Probability**: High  
-**Impact**: Low  
-**Description**: Poor transcription in noisy environments affects demo quality
-
-**Mitigation Strategies**:
-- Test in quiet environment for demo
-- Accept >80% accuracy as "good enough" for MVP
-- Focus on emergency keyword detection
-- Have manual text fallback available
-- Use clear speech during demo
-
-**Owner**: Workflow Engineer  
-**Status**: Open
-
-#### Risk 8: Airtable Learning Curve
+#### Risk 7: Voice Conversation Quality
 **Probability**: Low  
 **Impact**: Low  
-**Description**: Team unfamiliar with Airtable base design and automation
+**Description**: ElevenLabs agent voice quality or conversation flow affects demo
 
 **Mitigation Strategies**:
-- Start with Airtable templates for incident tracking
-- Keep base design simple (table + views only)
-- Focus on n8n sync over Airtable automation
-- Use Google Sheets as simpler backup option
+- Test agent voice quality in advance
+- Use professional Rachel voice (proven clear)
+- Test conversation flow with construction scenarios
+- ElevenLabs provides high-quality voice synthesis
+- Agent handles speech-to-text natively
+
+**Owner**: AI Engineer  
+**Status**: Open
+
+#### Risk 8: Cloud Functions Deployment
+**Probability**: Low  
+**Impact**: Low  
+**Description**: Cloud Functions deployment or configuration issues
+
+**Mitigation Strategies**:
+- Use Terraform for repeatable deployments
+- Test deployment in clean environment
+- Keep function dependencies minimal
+- Use Google Cloud Functions reliable platform
+- Have deployment rollback procedures ready
 
 **Owner**: Dashboard Engineer  
 **Status**: Open
 
-### Risk Monitoring Schedule (Accelerated for 24h timeline)
-- **Every 4 hours**: Quick risk check during team check-ins
-- **Every 8 hours**: Cost and service status review
-- **12 hours before demo**: Final risk mitigation verification
+### Risk Monitoring Schedule (Accelerated for 12h timeline)
+- **Every 2 hours**: Quick risk check during team check-ins
+- **Every 4 hours**: Cost and service status review
+- **6 hours before demo**: Final risk mitigation verification
 - **Demo day**: Real-time service monitoring
 
 ### Escalation Process (Accelerated)
-1. **Green**: All workflows functioning, on track
-2. **Yellow**: Minor n8n workflow issues, workarounds available
+1. **Green**: All functions working, on track
+2. **Yellow**: Minor Cloud Function issues, workarounds available
 3. **Red**: Major blocker requiring immediate team attention
 
 **Red Alert Triggers**:
-- n8n workflows failing 6 hours before demo
-- External service outage during development
-- Cost overrun >$100 (given shorter timeline)
-- Critical workflow node not functioning
+- Cloud Functions failing 4 hours before demo
+- ElevenLabs agent unresponsive during development
+- Cost overrun >$25 (given shorter timeline)
+- Critical function deployment failing
 
 ### Emergency Contacts & Resources
-- **n8n Documentation**: [n8n.io/docs]
+- **Cloud Functions Documentation**: [cloud.google.com/functions/docs]
+- **ElevenLabs API Docs**: [elevenlabs.io/docs]
 - **Terraform Registry**: [registry.terraform.io]
 - **Google Cloud Status**: [status.cloud.google.com]
 - **Telegram Bot API**: [core.telegram.org/bots/api]
 - **Airtable Status**: [status.airtable.com]
 
 ### Success Metrics for Risk Management
-- **Zero workflow downtime** during final 6 hours before demo
-- **Total cost <$50** for entire development cycle  
+- **Zero function downtime** during final 4 hours before demo
+- **Total cost <$10** for entire development cycle  
 - **All external services tested** 2 hours before demo
 - **Backup procedures documented** and tested
 
 ### Post-Demo Template Improvement
 After demo completion, update reusable templates based on:
-- Which n8n nodes were most reliable
+- Which Cloud Functions were most reliable
 - Which external services had best uptime
 - Which configurations needed the least troubleshooting
-- How to make 5-minute setup even faster for future hackathons
+- How to make 3-minute setup even faster for future hackathons

@@ -1,0 +1,29 @@
+# Claude Code Documentation Reminders
+# This file contains automatic reminders for Claude Code - Updated for Serverless Architecture
+
+TASK_START_REMINDER="Before starting: read SPRINT_PLAN.md and TECHNICAL_SPEC.md for serverless architecture"
+TASK_COMPLETE_REMINDER="After completing task: update DEVELOPMENT_CHECKLIST.md with [x] checkmark"
+BLOCKER_REMINDER="If stuck: consult RISK_REGISTER.md for mitigation strategies"
+ARCHITECTURE_CHANGE_REMINDER="If changing architecture: update TECHNICAL_SPEC.md immediately"
+SCOPE_CHANGE_REMINDER="If scope changes: update PRD.md and get approval"
+
+# Integration-specific reminders (Updated for new architecture)
+CLOUD_FUNCTIONS_REMINDER="For Cloud Functions: follow specifications in TECHNICAL_SPEC.md 'Cloud Function Specifications'"
+ELEVEN_LABS_AGENT_REMINDER="For ElevenLabs Conversational Agent: use scripts/create_agent.py for setup"
+TELEGRAM_REMINDER="For Telegram integration: use Cloud Functions webhook, not n8n"
+AIRTABLE_REMINDER="For Airtable setup: reference data model in TECHNICAL_SPEC.md and use direct API integration"
+FIRESTORE_REMINDER="For database operations: use Firestore with Cloud Functions, not PostgreSQL"
+
+# Architecture-specific reminders
+NO_N8N_REMINDER="IMPORTANT: This project NO LONGER uses n8n workflows - use Cloud Functions instead"
+SERVERLESS_REMINDER="Use serverless architecture: Cloud Functions + ElevenLabs Agent + Firestore"
+TERRAFORM_REMINDER="Infrastructure uses Terraform for Cloud Functions, not n8n deployment"
+
+# Team coordination reminders  
+ROLE_BOUNDARY_REMINDER="Check TEAM_RESPONSIBILITIES.md - roles updated for serverless development"
+DEMO_PREP_REMINDER="Before demo: ensure all tasks in DEVELOPMENT_CHECKLIST.md are marked complete"
+COST_REMINDER="Target cost: <$5 for 12h development (67% reduction from n8n approach)"
+
+# Development timeline reminders
+SPRINT_TIMELINE_REMINDER="12-hour accelerated timeline: Infrastructure(1.5h) + Pipeline(4h) + Dashboard(4h) + Testing(2.5h)"
+AGENT_SETUP_REMINDER="Create ElevenLabs agent BEFORE infrastructure deployment using ./scripts/setup_agent.sh"
