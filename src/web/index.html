@@ -64,14 +64,6 @@
             margin-right: auto;
         }
         
-        .widget-container {
-            display: flex;
-            justify-content: center;
-            margin: 60px 0;
-            padding: 40px 0;
-            border-top: 1px solid #e5e5e5;
-            border-bottom: 1px solid #e5e5e5;
-        }
         
         .features {
             display: grid;
@@ -133,10 +125,6 @@
                 font-size: 1rem;
             }
             
-            .widget-container {
-                padding: 20px;
-                margin: 30px 0;
-            }
             
             .features {
                 grid-template-columns: 1fr;
@@ -162,9 +150,6 @@
             </p>
         </div>
         
-        <div class="widget-container">
-            <elevenlabs-convai agent-id="agent_8401kdqtgnnbfx18q1fv460mh7pv"></elevenlabs-convai>
-        </div>
         
         <div class="features">
             <div class="feature">
@@ -187,6 +172,9 @@
     </div>
     
     <script src="https://unpkg.com/@elevenlabs/convai-widget-embed@beta" async type="text/javascript"></script>
+    
+    <!-- Voice widget at bottom of page -->
+    <elevenlabs-convai agent-id="agent_8401kdqtgnnbfx18q1fv460mh7pv"></elevenlabs-convai>
     
 </body>
 </html>
