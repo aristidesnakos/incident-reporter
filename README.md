@@ -62,9 +62,10 @@ AI: "I'm classifying this as URGENT due to the crane safety risk. I'll make sure
 
 ### Prerequisites
 - Web browser with microphone access
-- Internet connection (for ElevenLabs API)
+- Python 3 and pip (for creating your own ElevenLabs agent)
+- ElevenLabs API key (if creating new agent)
 
-### Setup
+### Option 1: Use Existing Demo
 ```bash
 # Clone repository
 git clone https://github.com/aristidesnakos/incident-reporter.git
@@ -77,10 +78,29 @@ python3 -m http.server 8000
 # Then visit: http://localhost:8000/src/web/
 ```
 
+### Option 2: Create Your Own Agent
+```bash
+# Clone repository
+git clone https://github.com/aristidesnakos/incident-reporter.git
+cd incident-reporter/src/agents
+
+# Run setup script
+./setup_agent.sh
+
+# Follow prompts to:
+# 1. Add your ElevenLabs API key
+# 2. Create new conversational agent
+# 3. Update web/index.html with your agent ID
+```
+
 ### File Structure
 ```
 ├── src/web/index.html          # Complete web application
-├── src/agents/agent_info.json  # ElevenLabs agent configuration
+├── src/agents/                 # ElevenLabs agent setup
+│   ├── agent_info.json         # Current agent configuration
+│   ├── create_agent.py         # Agent creation script
+│   ├── setup_agent.sh          # Automated setup script
+│   └── requirements.txt        # Python dependencies
 ├── docs/                       # Project documentation
 ├── LICENSE                     # MIT open source license
 └── README.md                   # This file
