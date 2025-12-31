@@ -21,8 +21,9 @@ def get_safety_manager_tool():
         "name": "notify_safety_manager",
         "description": (
             "Notifies the Safety Manager with incident details after "
-            "completing an incident report. This sends an email to the "
-            "appropriate safety personnel based on the incident type and urgency."
+            "completing an incident report. This sends structured incident data "
+            "to a webhook that formats and emails the appropriate safety personnel "
+            "based on the incident type and urgency."
         ),
         "disable_interruptions": False,
         "force_pre_tool_speech": "auto",
@@ -39,10 +40,9 @@ def get_safety_manager_tool():
                 "id": "body",
                 "type": "object",
                 "description": (
-                    "The notify_safety_manager tool sends incident details to the "
-                    "appropriate safety personnel. It ensures the Safety Manager "
-                    "and relevant team members are immediately informed of "
-                    "construction site safety incidents."
+                    "The notify_safety_manager tool sends structured incident data to a "
+                    "webhook endpoint that processes and formats the information into "
+                    "email notifications for the Safety Manager and relevant team members."
                 ),
                 "properties": [
                     {

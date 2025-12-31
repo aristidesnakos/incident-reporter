@@ -171,6 +171,15 @@
             border: 1px solid #ddd;
         }
 
+        .process-arrow {
+            color: #666;
+            font-size: 1.2rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
         .example-incident {
             background: white;
             border: 1px solid #ddd;
@@ -246,6 +255,10 @@
                 gap: 10px;
             }
 
+            .process-arrow {
+                transform: rotate(90deg);
+            }
+
             .app-process {
                 padding: 20px;
             }
@@ -268,7 +281,9 @@
             <h3>How it Works</h3>
             <div class="process-flow">
                 <div class="process-step">Call</div>
+                <div class="process-arrow">→</div>
                 <div class="process-step">Triage</div>
+                <div class="process-arrow">→</div>
                 <div class="process-step">Email to Safety Manager</div>
             </div>
             
