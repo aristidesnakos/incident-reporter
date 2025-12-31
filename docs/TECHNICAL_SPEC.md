@@ -1,107 +1,88 @@
 # Technical Specification
-## Digital Foreman MVP - Serverless Conversational AI Architecture
+## Digital Foreman MVP - Web-Based Conversational AI Architecture
 
 ### Architecture Overview
 ```
-Telegram Bot → Cloud Function Webhook → ElevenLabs Conversational AI Agent → Firestore → Cloud Function → Airtable Dashboard
+Web Page → ElevenLabs Conversational AI Widget → [Optional: Webhook] → Airtable Dashboard
 ```
 
 ### Technology Stack
-- **Voice AI**: ElevenLabs Conversational AI Agent (native voice-to-voice)
-- **Bot Platform**: Telegram Bot API (via Cloud Functions)
-- **Backend**: Google Cloud Functions (serverless, event-driven)
-- **Database**: Firestore (document database)
-- **Storage**: Cloud Storage (audio conversation logs)
+- **Voice AI**: ElevenLabs Conversational AI Widget (native voice-to-voice)
+- **Frontend**: Single HTML page (no framework required)
+- **Backend**: Optional webhook endpoint (for data capture)
 - **Dashboard**: Airtable (real-time incident tracking)
-- **Notifications**: Telegram-only (emergency alerts via chat)
-- **Infrastructure**: Terraform for repeatable deployments
+- **Deployment**: Static file hosting or local file
+- **Infrastructure**: Zero infrastructure required
 
 ### Data Models
 
-#### Incident Document (Firestore)
+#### Incident Record (Airtable)
 ```json
 {
-  "id": "auto-generated",
-  "timestamp": "2024-01-15T10:30:00Z",
-  "user_id": "telegram_user_id",
-  "user_name": "John Smith", 
-  "conversation": {
-    "initial_transcript": "There's a wet floor in zone 3",
-    "ai_response": "I understand there's a wet floor hazard in zone 3. Can you tell me how large the area is and if there are warning signs up?",
-    "user_followup": "It's about 10 square feet near the entrance, no signs yet",
-    "ai_classification": "This is an urgent slip hazard that needs immediate attention"
-  },
-  "audio_files": {
-    "user_input": "gs://bucket/user_input_123.ogg",
-    "ai_response": "gs://bucket/ai_response_123.mp3"
-  },
-  "classification": {
-    "urgency": "emergency|urgent|routine",
-    "type": "injury|near-miss|hazard|equipment", 
-    "location": "Zone 3",
-    "confidence": 0.85,
-    "conversation_quality": 0.92
-  },
-  "status": "open|resolved",
-  "follow_ups": [
-    {
-      "timestamp": "2024-01-16T10:30:00Z",
-      "message": "Was this resolved?",
-      "voice_response": "gs://bucket/followup_voice_123.mp3",
-      "response": "Yes, cleaned up and signs posted"
-    }
-  ]
+  "Incident_ID": "INC-001", 
+  "Timestamp": "2024-01-15T10:30:00Z",
+  "Reporter": "John Smith",
+  "Conversation_Summary": "Wet floor hazard in Zone 3, approximately 10 square feet near entrance, no warning signs posted",
+  "Urgency": "Emergency|Urgent|Routine",
+  "Type": "Injury|Near-Miss|Hazard|Equipment",
+  "Location": "Zone 3", 
+  "Status": "Open|In Progress|Resolved",
+  "AI_Confidence": "85%",
+  "Conversation_Link": "https://elevenlabs.ai/conversation/abc123" 
 }
 ```
 
-### Cloud Function Specifications
+### Implementation Details
 
-#### 1. Telegram Voice Handler (`telegram-voice-handler`)
-```
-Trigger: HTTP request from Telegram webhook
-↓
-Receive voice message from Telegram
-↓
-Forward to ElevenLabs Conversational AI Agent
-├── Agent handles speech-to-text
-├── Agent processes conversation with safety prompt
-├── Agent classifies incident urgency
-└── Agent generates voice response
-↓
-Receive agent response (voice + structured data)
-↓
-Store conversation in Firestore
-↓
-Route by urgency classification
-├── Emergency → Trigger Telegram alert
-├── Urgent → Send Telegram notification
-└── Routine → Log only
-↓
-Send voice response back via Telegram
-```
+#### 1. Web Interface (`index.html`)
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Foreman - Voice Safety Reporter</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Mobile-first responsive design */
+        body { font-family: Arial; max-width: 800px; margin: 0 auto; padding: 20px; }
+        .hero { text-align: center; margin-bottom: 40px; }
+        .widget-container { display: flex; justify-content: center; margin: 40px 0; }
+    </style>
+</head>
+<body>
+    <div class="hero">
+        <h1>Digital Foreman</h1>
+        <p>Voice-Powered Safety Incident Reporting</p>
+        <p>Click below to start a voice conversation with our AI safety assistant</p>
+    </div>
+    
+    <div class="widget-container">
+        <elevenlabs-convai agent-id="agent_8401kdqtgnnbfx18q1fv460mh7pv"></elevenlabs-convai>
+    </div>
 
-#### 2. Follow-up Scheduler (`followup-scheduler`)
-```
-Trigger: Cloud Scheduler (every 24 hours)
-↓
-Query unresolved incidents from Firestore
-↓
-For each open incident:
-├── Check time since last contact
-├── Create follow-up conversation with ElevenLabs agent
-├── Send voice follow-up via Telegram
-└── Update follow-up count in Firestore
+    <script src="https://unpkg.com/@elevenlabs/convai-widget-embed@beta" async type="text/javascript"></script>
+</body>
+</html>
 ```
 
-#### 3. Airtable Sync (`airtable-sync`)
-```
-Trigger: Firestore document changes
-↓
-Receive Firestore change event
-↓
-Transform incident data for Airtable
-↓
-Update/create Airtable record
+#### 2. Optional Data Capture (webhook endpoint)
+```javascript
+// Optional: ElevenLabs webhook to capture conversation data
+app.post('/webhook/elevenlabs', (req, res) => {
+    const conversationData = req.body;
+    
+    // Extract incident details from conversation
+    const incident = {
+        timestamp: new Date().toISOString(),
+        summary: conversationData.transcript,
+        urgency: conversationData.metadata.urgency,
+        location: conversationData.metadata.location
+    };
+    
+    // Send to Airtable via API
+    airtable.create(incident);
+    
+    res.status(200).send('OK');
+});
 ```
 
 ### ElevenLabs Conversational AI Agent Configuration

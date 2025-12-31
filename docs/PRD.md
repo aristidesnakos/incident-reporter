@@ -1,8 +1,8 @@
 # Product Requirements Document (PRD)
-## Digital Foreman MVP - Conversational AI Voice Safety Reporter
+## Digital Foreman MVP - Web-Based Conversational AI Voice Safety Reporter
 
 ### Product Vision
-Native voice-to-voice conversational AI safety companion that eliminates reporting friction through natural speech interactions via Telegram bot. Uses ElevenLabs Conversational AI Agent API + Google Cloud Functions to create human-like voice interactions for incident reporting, while creating reusable templates for future hackathons.
+Native voice-to-voice conversational AI safety companion accessible via simple web interface. Uses ElevenLabs Conversational AI Widget to create human-like voice interactions for incident reporting with zero infrastructure complexity, while creating reusable templates for future hackathons.
 
 ### Success Metrics
 - **Primary**: Incident reporting time: 5 minutes → 30 seconds via natural conversation
@@ -23,12 +23,13 @@ I want to have natural voice conversations with an AI safety companion
 So that I can quickly report incidents through natural speech without forms or typing
 
 Acceptance Criteria:
-- Workers access conversational Telegram bot via direct link/username
-- Bot accepts voice messages and responds with natural voice
-- Bot asks follow-up questions conversationally via ElevenLabs voice
+- Workers access web page with embedded ElevenLabs voice widget
+- Widget enables native voice-to-voice conversations (no typing)
+- AI asks follow-up questions conversationally using ElevenLabs agent
 - ElevenLabs Conversational AI understands construction safety context
 - Voice conversation accuracy >90% for safety terminology  
 - Complete conversation flow under 60 seconds
+- Works on mobile browsers (no app installation required)
 ```
 
 #### Epic 2: Conversational Intelligence & Triage
@@ -39,11 +40,12 @@ So that I can respond to critical issues immediately with proper context
 
 Acceptance Criteria:
 - AI extracts incident details through conversational prompts
-- EMERGENCY: Auto-notification via Telegram within 30 seconds
-- URGENT: Telegram alert within 5 minutes  
+- EMERGENCY: Real-time dashboard alert with audio notification
+- URGENT: Dashboard highlight within 5 minutes  
 - ROUTINE: Added to daily dashboard
 - 90% accurate urgency classification via ElevenLabs Conversational AI
 - Natural follow-up questions improve data quality
+- Incidents appear in Airtable dashboard immediately
 ```
 
 #### Epic 3: Auto-Follow-Up
@@ -53,9 +55,11 @@ I want unresolved incidents automatically tracked
 So that nothing falls through the cracks
 
 Acceptance Criteria:
-- Follow-up message sent 24h after initial report
-- Incident status updated based on response
-- Escalation if no response after 48h
+- Dashboard shows incidents requiring follow-up (24h+ unresolved)
+- Email notifications for overdue incidents
+- Manual follow-up conversations via same web interface
+- Incident status updated based on dashboard actions
+- Escalation workflows built into Airtable
 ```
 
 #### Epic 4: Real-Time Dashboard
@@ -73,28 +77,28 @@ Acceptance Criteria:
 ```
 
 ### Technical Innovation Goals
-- **Native Voice Conversations**: ElevenLabs Conversational AI Agent handles voice-to-voice natively
-- **Serverless Architecture**: Google Cloud Functions + ElevenLabs Agent (no complex orchestration)
-- **Infrastructure as Code**: Terraform templates for one-command deployment
+- **Native Voice Conversations**: ElevenLabs Conversational AI Widget handles voice-to-voice natively
+- **Zero Infrastructure**: Single HTML page + ElevenLabs widget (no servers, no deployment complexity)
+- **Instant Setup**: Copy/paste widget code - working voice AI in 60 seconds
 - **Reusable Templates**: Create hackathon starter kit for voice/conversational AI projects
 - **Natural Voice UX**: Human-like personality using ElevenLabs conversational agent
-- **Rapid MVP**: Demonstrate 80% faster development time vs traditional approach
+- **Rapid MVP**: Demonstrate 90% faster development time vs traditional approach
 
 ### Out of Scope (V1)
 - Custom React dashboard (replaced with Airtable)
-- Complex workflow orchestration (replaced with ElevenLabs agent + Cloud Functions)
+- Complex backend infrastructure (replaced with ElevenLabs widget)
 - Integration with Procore/ACC APIs
 - Smart helmet hardware
 - Photo attachments
 - Multilingual support
 - Advanced analytics beyond Airtable's native features
-- User management system beyond Telegram authentication
+- User authentication system (open access web page)
 
 ### Definition of Done
-- End-to-end voice-to-voice reporting works through ElevenLabs Conversational Agent
+- End-to-end voice-to-voice reporting works through ElevenLabs Widget in web page
 - Natural voice conversations feel human-like using native ElevenLabs capabilities
-- Emergency incidents trigger Telegram alerts within 30 seconds
+- Emergency incidents show immediate alerts in Airtable dashboard
 - Airtable dashboard shows real-time incident data with conversation transcripts
-- System handles 10 concurrent voice conversations
+- Web page works on mobile and desktop browsers
 - Demo-ready with seeded test data and sample voice conversations
-- **Bonus**: Reusable ElevenLabs + Cloud Functions template documented for future hackathons
+- **Bonus**: Reusable ElevenLabs widget template documented for future hackathons

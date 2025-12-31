@@ -1,147 +1,111 @@
 # Sprint Planning & Roadmap
-## Digital Foreman MVP - 12 Hour Conversational AI Development Plan
+## Digital Foreman MVP - 4 Hour Web-Based Conversational AI Development Plan
 
-### Sprint 0: Infrastructure Setup (1.5 hours) ⚠️ 95% COMPLETE - BLOCKED BY GCP SERVICE ACCOUNT
-**Goal**: Complete serverless infrastructure deployment using reusable templates
+### Sprint 0: Simple Setup (30 minutes) ✅ COMPLETED
+**Goal**: Create web-based conversational AI interface with zero infrastructure
 
 **Tasks Completed:**
-- [x] Create Telegram bot via @BotFather (10 min)
 - [x] Create ElevenLabs Conversational AI Agent (20 min) 
 - [x] Set up Airtable base from template (10 min)
-- [x] Install and configure Google Cloud SDK
-- [x] Switch to `hotspringslist` project with billing enabled
-- [x] Deploy 95% of Terraform infrastructure:
-  - [x] Firestore database (imported existing)
-  - [x] Secret Manager with all API credentials stored
-  - [x] Cloud Storage buckets (function source + audio files)
-  - [x] Service accounts with proper IAM permissions
-  - [x] All required Google Cloud APIs enabled
-  - [x] Complete Terraform state with 25+ resources deployed
 
-**Tasks Blocked:**
-- [ ] Deploy Cloud Functions (15 min) - **BLOCKED**: Missing default Compute Engine service account `92258738211-compute@developer.gserviceaccount.com`
-- [ ] Configure Telegram webhook with deployed Cloud Function URL (5 min) - **BLOCKED**: Cloud Functions not deployed
-
-**Technical Blocker Details:**
-- **Root Cause**: Google Cloud project missing default Compute Engine service account
-- **Error**: `Service account projects/-/serviceAccounts/92258738211-compute@developer.gserviceaccount.com was not found`
-- **Impact**: Cloud Functions cannot be deployed via Terraform
-- **Workaround Options**:
-  1. Manual Cloud Function deployment via Google Cloud Console
-  2. Enable Compute Engine API and create VM to initialize service account
-  3. Request Google Cloud support to create default service account
-
-**Status**: Infrastructure foundation 95% complete, final Cloud Functions blocked by GCP service account issue
+**Status**: Core setup complete - ready to build web interface
 
 ---
 
-### Sprint 1: Conversational Voice Pipeline (4 hours)
+### Sprint 1: Web Interface Development (2 hours)
 
-#### Hour 1-2: ElevenLabs Agent Integration
-**Assignee**: AI Engineer
+#### Hour 1: Create Web Interface
+**Assignee**: Frontend Developer
 
 **Tasks:**
-- [x] Configure ElevenLabs agent with safety prompt (30 min)
-- [ ] Test agent voice conversations (30 min) - pending deployment
-- [x] Implement Cloud Function webhook handler (30 min)
-- [x] Connect Telegram → ElevenLabs agent flow (30 min)
+- [ ] Create HTML page with ElevenLabs widget (30 min)
+- [ ] Style interface for mobile/desktop (15 min)
+- [ ] Test voice conversations in browser (15 min)
 
-**Definition of Done**: Voice messages trigger ElevenLabs conversations ✅ CODE COMPLETE
+**Definition of Done**: Working web page with voice conversations
 
-#### Hour 3-4: Data Pipeline & Alerts
+#### Hour 2: Data Integration (Optional)
 **Assignee**: Backend Engineer
 
 **Tasks:**
-- [x] Extract structured data from agent responses (30 min)
-- [x] Implement Firestore storage (30 min)
-- [x] Telegram notification routing (emergency/urgent/routine) (30 min)
-- [ ] Test end-to-end voice → database flow (30 min) - pending deployment
+- [ ] Set up webhook endpoint to capture conversation data (30 min)
+- [ ] Connect to Airtable for incident storage (15 min)  
+- [ ] Test end-to-end voice → Airtable flow (15 min)
 
-**Definition of Done**: Voice → ElevenLabs → Database + Telegram Notifications working ✅ CODE COMPLETE
-
----
-
-### Sprint 2: Dashboard & Automation (4 hours)
-
-#### Hour 5-6: Real-time Dashboard
-**Assignee**: Dashboard Engineer
-
-**Tasks:**
-- [ ] Cloud Function → Airtable sync (30 min)
-- [ ] Airtable views for urgency filtering (30 min)
-- [ ] Test real-time data flow (30 min)
-- [ ] Mobile dashboard optimization (30 min)
-
-**Definition of Done**: Real-time incident dashboard operational
-
-#### Hour 7-8: Follow-up Automation
-**Assignee**: AI Engineer
-
-**Tasks:**
-- [ ] Cloud Scheduler for follow-ups (30 min)
-- [ ] ElevenLabs agent follow-up conversations (30 min)
-- [ ] Firestore status updates (30 min)
-- [ ] Test automated follow-up flow (30 min)
-
-**Definition of Done**: Automated 24h follow-ups via voice
+**Definition of Done**: Voice conversations stored in Airtable dashboard
 
 ---
 
-### Sprint 3: Testing & Demo Preparation (2.5 hours)
+### Sprint 2: Dashboard Enhancement (1 hour)
 
-#### Hour 9-11.5: End-to-End Testing & Demo Prep
+#### Dashboard Setup
+**Assignee**: Data Analyst
+
+**Tasks:**
+- [ ] Configure Airtable views for urgency filtering (20 min)
+- [ ] Set up Airtable forms for manual incident entry (20 min)
+- [ ] Create dashboard sharing links (10 min)
+- [ ] Test mobile dashboard access (10 min)
+
+**Definition of Done**: Airtable dashboard ready for demo with sample data
+
+---
+
+### Sprint 3: Testing & Demo Preparation (30 minutes)
+
+#### Demo Preparation
 **Assignee**: All Team
 
 **Tasks:**
-- [ ] End-to-end voice conversation testing (45 min)
-- [ ] Performance optimization (30 min)
-- [ ] Demo data preparation (30 min)
-- [ ] Demo script rehearsal (30 min)
-- [ ] Backup plan documentation (15 min)
+- [ ] End-to-end voice conversation testing (15 min)
+- [ ] Demo script rehearsal (10 min)  
+- [ ] Documentation cleanup (5 min)
 
-**Definition of Done**: Demo ready with tested backup plan
+**Definition of Done**: Demo ready with working voice interface
 
 ### Progress Tracking
-- **Current Status**: Sprint 0 infrastructure foundation complete
-- **Next Milestone**: ElevenLabs agent creation and Cloud Functions deployment
-- **Target Completion**: 12 hours total development time
+- **Current Status**: Sprint 0 setup complete, ready for web development
+- **Next Milestone**: Create working HTML page with ElevenLabs widget
+- **Target Completion**: 4 hours total development time
 
 ### Progress Checkpoints
-- **Hour 1.5**: Infrastructure fully deployed ✅ COMPLETED
-- **Hour 4**: Voice → ElevenLabs → Database pipeline working
-- **Hour 8**: Dashboard live with automated follow-ups  
-- **Hour 11.5**: Demo ready with backup plan
+- **Hour 0.5**: Setup complete ✅ COMPLETED
+- **Hour 2.5**: Web interface working with voice conversations
+- **Hour 3.5**: Dashboard integrated with incident data
+- **Hour 4**: Demo ready
 
 ### Resume Instructions (Next Session)
-1. **FIRST**: Fix GCP service account - create VM to initialize default compute SA
-2. Deploy 3 Cloud Functions via Terraform or Console
-3. Get webhook URL: `terraform output telegram_webhook_url` 
-4. Configure Telegram webhook
-5. Test voice pipeline
+1. **Create HTML page** with ElevenLabs widget:
+   ```html
+   <elevenlabs-convai agent-id="agent_8401kdqtgnnbfx18q1fv460mh7pv"></elevenlabs-convai>
+   <script src="https://unpkg.com/@elevenlabs/convai-widget-embed@beta" async type="text/javascript"></script>
+   ```
+2. **Test voice conversations** in browser
+3. **Optional**: Set up webhook to capture data in Airtable
+4. **Demo**: Working voice incident reporting
 
 ### Scope Protection Rules
-1. **Minimal custom code** - leverage ElevenLabs agent + Cloud Functions only
-2. **Template-first approach** - create reusable Cloud Function templates
+1. **Zero infrastructure** - leverage ElevenLabs widget only
+2. **Copy-paste approach** - reusable HTML templates
 3. **Demo over perfection** - working voice demo beats complex features
 4. **Native voice conversations** - ElevenLabs handles all voice processing
 
 ### Reusable Hackathon Template
 This project creates reusable components for future hackathons:
 
-**Infrastructure Template** (`/infrastructure`):
-- Terraform modules for GCP + Cloud Functions setup
-- Firestore and Cloud Storage configuration
-- Service account configurations
+**Web Template** (`/src/web/`):
+- HTML page with embedded ElevenLabs conversational widget
+- Mobile-responsive design
+- Zero-setup voice conversations
 
-**Function Templates** (`/src/functions/`):
-- Voice conversation handler (Telegram → ElevenLabs Agent → Database)  
-- Telegram notification routing (emergency/urgent/routine alerts)
-- Automated follow-up scheduling with voice responses
-- Database sync to external dashboards
+**Integration Templates** (`/src/integrations/`):
+- ElevenLabs webhook handlers (optional)
+- Airtable data sync utilities
+- Email notification scripts
 
-**Dashboard Templates** (`/dashboards`):
+**Dashboard Templates** (`/dashboards/`):
 - Airtable base with incident tracking views
-- Real-time sync configuration
+- Pre-built views for urgency filtering
 - Mobile-responsive layouts
 
-**Deployment**: One-command infrastructure setup with `terraform apply`
+**Deployment**: Open HTML file in browser - working voice AI in 60 seconds

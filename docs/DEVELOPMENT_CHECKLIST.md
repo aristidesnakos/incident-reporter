@@ -1,32 +1,28 @@
 # Technical Implementation Checklist
-## Digital Foreman MVP - Serverless Architecture
+## Digital Foreman MVP - Web-Based Architecture
 
 > **📖 Reference Guide**: Consult `docs/TECHNICAL_SPEC.md` for detailed implementation specifications
 
-### Infrastructure Deployment
-- [x] Terraform infrastructure template (`./deploy.sh` script created)
-- [x] Google Cloud SDK installed and configured
-- [x] Telegram bot token obtained from @BotFather
+### Simple Setup
 - [x] ElevenLabs Conversational AI agent created with safety prompt
 - [x] Airtable base configured
-- [x] Terraform infrastructure 95% deployed (Firestore, Secret Manager, Storage, IAM)
-- [ ] Cloud Functions deployment (blocked - missing default Compute Engine service account)
-- [ ] Telegram webhook connected
+- [x] HTML page created with ElevenLabs widget
+- [x] Mobile-responsive styling applied
+- [ ] Voice conversations tested
 
 ### Core Voice Processing
-- [x] `telegram-voice-handler` Cloud Function implementation complete
-- [x] Voice message download from Telegram API implemented  
-- [x] ElevenLabs agent voice-to-voice processing integration ready
-- [x] Firestore incident document storage schema defined
-- [x] Urgency classification logic (emergency/urgent/routine) implemented
-- [x] Voice response delivery via Telegram implemented
+- [x] ElevenLabs widget embedded in web page
+- [x] Voice-to-voice conversation functionality via widget
+- [x] Safety incident reporting via natural conversation
+- [x] Urgency classification logic (emergency/urgent/routine) in agent prompt
+- [ ] Conversation data capture (optional webhook)
 
-### Data Pipeline & Automation
-- [x] `airtable-sync` Cloud Function with Eventarc triggers implemented
-- [x] `followup-scheduler` Cloud Function with Cloud Scheduler implemented
-- [x] Firestore → Airtable real-time sync logic implemented
-- [x] Automated follow-up voice messages (24h cycle) implemented
-- [x] Emergency notification routing via Telegram implemented
+### Data Pipeline & Dashboard
+- [x] Airtable base configured for incident tracking
+- [x] Airtable views for urgency filtering
+- [x] Mobile-responsive Airtable dashboard
+- [ ] Optional webhook for automated data capture
+- [ ] Email notifications for follow-up (manual process via Airtable)
 
 ### Quality Assurance
 - [ ] End-to-end voice conversation flow tested
@@ -36,17 +32,17 @@
 - [ ] Demo data seeded and tested
 
 ### Security & Performance
-- [ ] API credentials secured in Secret Manager
-- [ ] Cloud Functions IAM permissions minimized
-- [ ] Firestore security rules configured
-- [ ] Audio files auto-deletion (7-day lifecycle)
-- [ ] Function memory allocation optimized
+- [ ] ElevenLabs API key secured (not exposed in client-side code)
+- [ ] HTTPS required for microphone access
+- [ ] Audio data handled by ElevenLabs (automatic deletion)
+- [ ] Airtable API key secured (webhook only if implemented)
+- [ ] Web page performance optimized
 
 ### Monitoring Setup
-- [ ] Cloud Functions execution metrics enabled
+- [ ] Browser console error monitoring
 - [ ] ElevenLabs API usage monitoring
-- [ ] Firestore operation logging
-- [ ] Telegram webhook delivery tracking
+- [ ] Widget loading performance tracking
+- [ ] Voice conversation success rates
 
 ---
 

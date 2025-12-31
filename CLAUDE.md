@@ -4,61 +4,54 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Digital Foreman MVP - A voice-activated safety incident reporting system using Telegram bot interface with AI-powered incident triage. The system allows construction workers to report safety incidents via voice messages, automatically classifies them by urgency, and provides real-time dashboard monitoring.
+Digital Foreman MVP - A web-based voice-activated safety incident reporting system with AI-powered incident triage. The system allows construction workers to report safety incidents via voice conversations through a simple web interface, automatically classifies them by urgency, and provides real-time dashboard monitoring.
 
 ## Architecture
 
-**Serverless Tech Stack:**
-- Voice AI: ElevenLabs Conversational AI Agent (native voice-to-voice)
-- Bot Platform: Telegram Bot API (via Cloud Functions)
-- Backend: Google Cloud Functions (serverless, event-driven)
-- Database: Firestore (document database)
-- Storage: Cloud Storage (audio conversation logs)
+**Simple Web Stack:**
+- Voice AI: ElevenLabs Conversational AI Widget (native voice-to-voice)
+- Frontend: Single HTML page (mobile-responsive)
+- Backend: Optional webhook for data capture
 - Dashboard: Airtable (real-time incident tracking)
-- Notifications: Telegram-only (emergency alerts via chat)
-- Infrastructure: Terraform for repeatable deployments
+- Infrastructure: Zero infrastructure required
 
 **Data Flow:**
 ```
-Telegram Bot → Cloud Function Webhook → ElevenLabs Conversational AI Agent → Firestore → Cloud Function → Airtable Dashboard
+Web Page → ElevenLabs Conversational AI Widget → [Optional: Webhook] → Airtable Dashboard
 ```
 
 ## Key Components
 
-### Cloud Function Architecture
-1. **Telegram Voice Handler** (`telegram-voice-handler`): Webhook → download voice file → ElevenLabs agent processing → Firestore storage → urgency-based routing → voice response
-2. **Follow-up Scheduler** (`followup-scheduler`): Daily trigger → query unresolved incidents → ElevenLabs follow-up → Telegram delivery
-3. **Airtable Sync** (`airtable-sync`): Firestore changes → data transformation → Airtable updates
+### Web Interface
+1. **HTML Page** (`src/web/index.html`): Simple web page with embedded ElevenLabs widget
+2. **ElevenLabs Widget**: Voice-to-voice conversational AI for incident reporting
+3. **Optional Webhook**: Captures conversation data and sends to Airtable
 
-### Incident Data Model (Firestore)
-- Basic incident info: timestamp, user, transcript, audio file URL
+### Incident Data Model (Airtable)
+- Basic incident info: timestamp, reporter, conversation summary
 - AI classification: urgency, type, location, confidence score
-- Status tracking: open/resolved with follow-up messages
+- Status tracking: open/in progress/resolved
 
 ## Development Requirements
 
-**Infrastructure (Terraform-managed):**
-- Google Cloud Project with Firestore, Cloud Storage, Cloud Functions
-- Service accounts with minimal IAM permissions  
-- Secret Manager for credential storage
+**No Infrastructure Required:**
+- Just a web browser and text editor
+- Optional: Simple web server for webhook (if data capture needed)
 
 **External Service Setup:**
-- Telegram Bot token from @BotFather  
 - ElevenLabs Conversational AI Agent ID and API key
 - Airtable workspace and base for dashboard
 
 ## Development Commands
 
-**Infrastructure Deployment:**
+**Web Development:**
 ```bash
-# One-command infrastructure setup
-./deploy.sh [project-id]
+# Open HTML page in browser
+open /path/to/src/web/index.html
 
-# Manual Terraform deployment
-cd infrastructure
-terraform init
-terraform plan -var="project_id=your-project"
-terraform apply -var="project_id=your-project"
+# Serve locally (optional)
+python3 -m http.server 8000
+# Then visit http://localhost:8000/src/web/
 ```
 
 **ElevenLabs Agent Setup:**
@@ -69,50 +62,30 @@ cd src/agents
 python3 create_agent.py
 ```
 
-**Function Development:**
+**Optional Webhook Development:**
 ```bash
-# Install dependencies for local development
-cd src/functions/telegram_handler
-pip install -r requirements.txt
-
-# Test individual functions locally (using Functions Framework)
-functions-framework --target telegram_handler --debug
-```
-
-**Monitoring and Debugging:**
-```bash
-# View Cloud Function logs
-gcloud functions logs read telegram-voice-handler --project=your-project
-
-# Monitor Firestore operations
-gcloud firestore operations list --project=your-project
-
-# Check deployment status
-terraform output
+# For data capture integration (if needed)
+cd src/webhook
+python3 app.py  # Simple Flask/FastAPI server
 ```
 
 ## Project Structure
 
-**Core Architecture (Option 2 Structure):**
-- `/src/functions/` - Individual Cloud Functions (Python 3.11)
-  - `/telegram_handler/` - Voice message processing
-  - `/airtable_sync/` - Real-time dashboard sync  
-  - `/followup_scheduler/` - Automated follow-ups
+**Simple Web Architecture:**
+- `/src/web/` - Single HTML page with embedded ElevenLabs widget
 - `/src/agents/` - ElevenLabs agent setup and utilities
-- `/src/shared/` - Common utilities (replicated per function)
-- `/infrastructure/` - Terraform infrastructure templates
+- `/src/webhook/` - Optional webhook for data capture (if needed)
 - `/docs/` - Project documentation and sprint planning
 
 **Key Files:**
-- `deploy.sh` - One-command infrastructure deployment
-- `src/functions/*/main.py` - Individual Cloud Function entry points
-- `infrastructure/main.tf` - Complete Terraform infrastructure
+- `src/web/index.html` - Main web interface with ElevenLabs widget
 - `src/agents/setup_agent.sh` - ElevenLabs conversational agent setup
+- `src/agents/create_agent.py` - Agent configuration script
 
 **Development Process:**
-- Terraform infrastructure is deployed first via `./deploy.sh`
 - ElevenLabs agent created via `./src/agents/setup_agent.sh`
-- Cloud Functions handle serverless voice processing
+- Open `src/web/index.html` in browser for immediate voice interface
+- Optional webhook setup for Airtable data capture
 - Airtable serves as ready-made dashboard
 
 ## Documentation Discipline
@@ -156,21 +129,21 @@ read docs/DEVELOPMENT_CHECKLIST.md # Task status and completion tracking
 
 **No formal test suite exists** - this is a rapid prototype/MVP project focused on demonstrating voice AI capabilities. Quality assurance happens through:
 
-- **End-to-end testing**: Voice message → Telegram → Cloud Function → ElevenLabs → Firestore → Airtable
-- **Infrastructure validation**: `terraform plan` and `terraform apply` success
-- **Function deployment**: Cloud Functions deployment logs and execution monitoring
-- **Integration testing**: Manual testing of Telegram bot responses
+- **End-to-end testing**: Web page → ElevenLabs widget → voice conversation → response
+- **Browser compatibility**: Test on Chrome, Safari, Firefox, mobile browsers
+- **Voice quality**: Test microphone input and speaker output
+- **Integration testing**: Manual testing of voice conversation flows
 
 **Quality Checks:**
 ```bash
-# Validate Terraform configuration
-cd infrastructure && terraform validate
+# Test web page locally
+open src/web/index.html
 
-# Check Cloud Function deployment status
-gcloud functions describe telegram-voice-handler --region=us-central1
+# Test with local server (for HTTPS if needed)
+python3 -m http.server 8000
 
-# Monitor function execution logs
-gcloud functions logs read telegram-voice-handler --limit=50
+# Validate HTML
+# Use browser dev tools to check for console errors
 ```
 
-Refer to docs/TECHNICAL_SPEC.md for detailed Cloud Function specifications and ElevenLabs agent configurations.
+Refer to docs/TECHNICAL_SPEC.md for detailed ElevenLabs agent configurations and widget integration.

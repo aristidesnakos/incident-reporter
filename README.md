@@ -1,45 +1,42 @@
 # Digital Foreman MVP
 
-Voice-activated safety incident reporting system using ElevenLabs Conversational AI and serverless architecture.
+Voice-activated safety incident reporting system using ElevenLabs Conversational AI and simple web interface.
 
 ## Quick Start
 
 1. **Setup External Services**
    ```bash
-   # Create Telegram bot, ElevenLabs agent, Airtable base
+   # Create ElevenLabs agent, Airtable base
    cd src/agents && ./setup_agent.sh
    ```
 
-2. **Deploy Infrastructure**
+2. **Run Setup Script**
    ```bash
-   ./deploy.sh your-project-id
+   ./deploy.sh
    ```
 
-3. **Test the System**
-   - Send voice message to your Telegram bot
-   - Check incidents appear in Airtable dashboard
-   - Monitor Cloud Functions logs
+3. **Test Voice Conversations**
+   - Click the voice widget to start conversation
+   - Report safety incidents naturally via voice
+   - Check incidents in Airtable dashboard (optional)
 
 ## Architecture
 
-**Serverless Tech Stack:**
-- Voice AI: ElevenLabs Conversational AI Agent
-- Backend: Google Cloud Functions  
-- Database: Firestore
+**Simple Web Stack:**
+- Voice AI: ElevenLabs Conversational AI Widget
+- Frontend: Single HTML page
+- Backend: Optional webhook for data capture
 - Dashboard: Airtable
-- Notifications: Telegram
+- Infrastructure: Zero complexity
 
 **Project Structure:**
 ```
 src/
-├── functions/          # Individual Cloud Functions
-│   ├── telegram_handler/    # Voice processing
-│   ├── airtable_sync/       # Real-time sync
-│   └── followup_scheduler/  # Automated follow-ups
+├── web/                # HTML page with ElevenLabs widget
+│   └── index.html           # Main web interface
 ├── agents/             # ElevenLabs agent setup
-└── shared/            # Common utilities
+└── webhook/            # Optional data capture (if needed)
 
-infrastructure/         # Terraform templates
 docs/                  # Documentation  
 ```
 
@@ -53,6 +50,6 @@ See `docs/` directory for detailed documentation:
 
 ## Cost
 
-Estimated cost: <$5 for 12-hour development sprint.
+Estimated cost: <$1 for 4-hour development sprint.
 
 Perfect for hackathons and rapid prototyping!
