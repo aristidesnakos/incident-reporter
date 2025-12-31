@@ -80,6 +80,7 @@ python3 -m http.server 8000
 ### File Structure
 ```
 ├── src/web/index.html          # Complete web application
+├── src/agents/agent_info.json  # ElevenLabs agent configuration
 ├── docs/                       # Project documentation
 ├── LICENSE                     # MIT open source license
 └── README.md                   # This file

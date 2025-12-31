@@ -1,4 +1,0 @@
-ID,Timestamp,User Name,Incident Type,Urgency,Location,Description,Status,Follow-up Count,Confidence Score
-incident_001,2024-12-30T08:15:00Z,Mike Rodriguez,Hazard,Urgent,Zone 3 - Main Entrance,Wet floor near entrance - 10 sq ft area with no warning signs,Open,0,0.92
-incident_002,2024-12-30T10:45:00Z,Sarah Johnson,Equipment,Routine,Tool Storage - Building A,Circular saw blade needs replacement - noticed dullness during morning inspection,Open,0,0.87
-incident_003,2024-12-30T14:20:00Z,David Chen,Injury,Emergency,Scaffolding Area - East Side,Worker cut hand on exposed metal edge - bleeding controlled with first aid,Resolved,2,0.95
