@@ -13,11 +13,12 @@
 - [x] Emergency/Urgent/Routine classification built into agent
 
 ### Final Deliverables (PRIORITY)
-- [ ] **Hosted URL**: Deploy to GitHub Pages for public access
+- [ ] **Hosted URL**: Deploy to GitHub Pages with time-limited access
+- [ ] **Usage Protection**: Monitor ElevenLabs usage during judging period
 - [ ] **Open Source License**: Add MIT license file to repository
-- [ ] **Demo Video**: Record 3-minute demonstration video
 - [ ] **Repository Cleanup**: Clear README with setup instructions
-- [ ] **Devpost Submission**: Complete challenge submission form
+- [ ] **Demo Video**: Record 3-minute demonstration video (USER HANDLES)
+- [ ] **Devpost Submission**: Complete challenge submission form (USER HANDLES)
 
 ### Technical Validation
 - [x] ElevenLabs + Google AI integration working
