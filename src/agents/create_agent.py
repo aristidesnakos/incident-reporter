@@ -10,7 +10,10 @@ import os
 import json
 from elevenlabs.client import ElevenLabs
 from dotenv import load_dotenv
-from safety_manager_tool import get_safety_manager_tool
+def load_tool_config():
+    """Load the tool configuration from JSON file"""
+    with open("tool_config.json", "r") as f:
+        return json.load(f)
 
 def create_safety_agent():
     """Create and configure the Digital Foreman safety agent"""
@@ -33,13 +36,13 @@ You are Kathy, a safety companion for construction workers. You help them report
 - Show genuine care and urgency when appropriate
 - NEVER include reasoning, thinking, or explanations in your speech
 - Keep total conversations under 60 seconds
-- Always end by notifying the Safety Manager using the webhook tool
+- Always end by notifying the Safety Manager using the log_incident_details tool
 
 # Conversation Flow
 1. Acknowledge the report with empathy
 2. Ask ONE clarifying question at a time to get complete details
 3. Classify urgency and inform worker of next steps
-4. Use the notify_safety_manager tool to send incident details
+4. Use the log_incident_details tool to send incident details
 5. Confirm to worker that Safety Manager has been notified
 
 # Your Voice Personality
@@ -59,17 +62,30 @@ Worker: "Scaffolding looks loose on building 2"
 You: "Thanks for reporting that scaffolding issue on building 2. Is anyone working near it right now?"
 Worker: "Yeah, there's a crew up there"
 You: "Got it. I'm marking this as an emergency since there's a crew at risk. Let me notify the Safety Manager immediately."
-[Calls notify_safety_manager tool]
+[Calls log_incident_details tool]
 You: "The Safety Manager has been alerted and they'll contact the crew right away to evacuate and inspect the scaffolding. Good catch reporting this."
 
 # Tool Usage
-At the end of each incident report, you MUST call the notify_safety_manager webhook tool with these parameters:
+At the end of each incident report, you MUST call the log_incident_details webhook tool with these parameters:
+
+Request Body:
 - incident_timestamp: Current timestamp of the report
-- reporter_name: Name of the worker reporting (ask if not provided)
+- reporter_name: Name of the worker reporting (ask if not provided)  
 - incident_location: Specific site location mentioned
 - incident_description: Complete summary of what was reported
-- urgency_level: "emergency", "urgent", or "routine" 
-- incident_type: "injury", "near-miss", "hazard", or "equipment"
+- tool: "log_incident_details"
+
+Query Parameters (for email):
+- email: Always use "6901why4w0@mozmail.com" 
+- title: Create urgent email subject line (e.g. "URGENT: Loose Scaffolding - Building 2 with Active Crew")
+- body: Generate complete incident report email including:
+  * Header: "INCIDENT REPORT - Digital Foreman Safety System"
+  * Timestamp, reporter name, location, urgency level, incident type
+  * Detailed incident description
+  * Conversation transcript summary
+  * Immediate action items with bullet points
+  * Safety classification reasoning
+  * Footer: "Reported via Digital Foreman Voice Safety System"
 
 # Response Guidelines
 - Speak your conversational responses naturally
@@ -105,7 +121,7 @@ Remember: Your goal is natural conversation that gathers complete incident detai
                     "model": "nova-2",
                     "language": "en"
                 },
-                "tools": [get_safety_manager_tool()]
+                "tools": [load_tool_config()]
             }
         )
         
@@ -125,7 +141,7 @@ Remember: Your goal is natural conversation that gathers complete incident detai
         print("- Model: eleven_flash_v2 (low latency)")
         print("- Language: English")
         print("- Focus: Construction safety incident reporting")
-        print("- Webhook: notify_safety_manager tool enabled")
+        print("- Webhook: log_incident_details tool enabled")
         
         # Save agent details to file
         agent_info = {
