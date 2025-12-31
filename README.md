@@ -1,55 +1,136 @@
-# Digital Foreman MVP
+# Digital Foreman - Voice-Powered Safety Reporting
 
-Voice-activated safety incident reporting system using ElevenLabs Conversational AI and simple web interface.
+🏆 **ElevenLabs Challenge Submission** - Voice-driven safety incident reporting for construction using ElevenLabs Conversational AI + Google Gemini 2.5 Flash
 
-## Quick Start
+## 🚀 Live Demo
 
-1. **Setup External Services**
-   ```bash
-   # Create ElevenLabs agent, Airtable base
-   cd src/agents && ./setup_agent.sh
-   ```
+**🌐 Hosted Application**: https://aristidesnakos.github.io/incident-reporter/src/web/
 
-2. **Run Setup Script**
-   ```bash
-   ./deploy.sh
-   ```
+> ⚠️ **Demo Period**: Active during hackathon judging (limited time to prevent usage charges)
+> 
+> 🎙️ **Voice Required**: Click the voice widget and speak naturally about a safety incident
 
-3. **Test Voice Conversations**
-   - Click the voice widget to start conversation
-   - Report safety incidents naturally via voice
-   - Check incidents in Airtable dashboard (optional)
+## 🎯 Challenge Alignment
 
-## Architecture
+### ElevenLabs Integration ✅
+- **Primary Interface**: ElevenLabs Conversational AI widget
+- **Voice-to-Voice**: Complete conversation without typing
+- **Natural Interaction**: Professional voice persona for construction safety
+- **Real-time Processing**: Immediate voice responses
 
-**Simple Web Stack:**
-- Voice AI: ElevenLabs Conversational AI Widget
-- Frontend: Single HTML page
-- Backend: Optional webhook for data capture
-- Dashboard: Airtable
-- Infrastructure: Zero complexity
+### Google Cloud AI Integration ✅
+- **LLM Backend**: Google Gemini 2.5 Flash powering conversation logic
+- **Intelligent Classification**: Automatic urgency assessment (Emergency/Urgent/Routine)
+- **Context Awareness**: Construction-specific terminology understanding
+- **Natural Language Processing**: Sophisticated incident analysis
 
-**Project Structure:**
+## 🏗️ Use Case: Construction Safety
+
+**Problem**: Construction workers avoid reporting safety incidents due to complex forms and time constraints.
+
+**Solution**: Natural voice conversation with AI safety coordinator - just talk, no typing.
+
+**Value**: Faster reporting = better safety outcomes = fewer accidents.
+
+## 🎮 How to Use
+
+1. **Visit**: https://aristidesnakos.github.io/incident-reporter/src/web/
+2. **Allow Microphone**: Grant browser permission when prompted
+3. **Click Voice Widget**: Start conversation with AI safety coordinator
+4. **Speak Naturally**: Describe your safety incident as if talking to a human
+5. **Get Classification**: AI automatically categorizes urgency and provides guidance
+
+### Example Conversation:
 ```
-src/
-├── web/                # HTML page with ElevenLabs widget
-│   └── index.html           # Main web interface
-├── agents/             # ElevenLabs agent setup
-└── webhook/            # Optional data capture (if needed)
-
-docs/                  # Documentation  
+You: "Hey, we had a close call today with the crane"
+AI: "I'd like to help you report this safely. Can you tell me what happened with the crane?"
+You: "The operator was lifting a load and it swung close to where Mike was working"
+AI: "That sounds concerning. Was anyone injured, and was Mike able to move out of the way safely?"
+...
+AI: "I'm classifying this as URGENT due to the crane safety risk. I'll make sure this gets immediate attention."
 ```
 
-## Documentation
+## 💻 Technical Stack
 
-See `docs/` directory for detailed documentation:
-- `docs/TECHNICAL_SPEC.md` - Architecture details and setup guide
-- `docs/DEVELOPMENT_CHECKLIST.md` - Technical task tracking
-- `docs/SPRINT_PLAN.md` - Project timeline and progress
-- `docs/PRD.md` - Product requirements
+- **Frontend**: Responsive HTML5 with embedded ElevenLabs widget
+- **Voice AI**: ElevenLabs Conversational Agent (`agent_8401kdqtgnnbfx18q1fv460mh7pv`)
+- **LLM**: Google Gemini 2.5 Flash (integrated via ElevenLabs)
+- **Hosting**: GitHub Pages (free, reliable, HTTPS for microphone access)
+- **Mobile**: Fully responsive design for job site use
 
-## Cost
+## 🔧 Local Development
 
-Estimated cost: <$1 for 4-hour development sprint.
+### Prerequisites
+- Web browser with microphone access
+- Internet connection (for ElevenLabs API)
 
-Perfect for hackathons and rapid prototyping!
+### Setup
+```bash
+# Clone repository
+git clone https://github.com/aristidesnakos/incident-reporter.git
+cd incident-reporter
+
+# Open in browser
+open src/web/index.html
+# OR serve locally for HTTPS (required for microphone)
+python3 -m http.server 8000
+# Then visit: http://localhost:8000/src/web/
+```
+
+### File Structure
+```
+├── src/web/index.html          # Complete web application
+├── docs/                       # Project documentation
+├── LICENSE                     # MIT open source license
+└── README.md                   # This file
+```
+
+## 🛡️ Usage Protection
+
+**For Hackathon Judges**: The demo is live and ready for testing!
+
+**Cost Management**: 
+- Demo enabled during judging period only
+- ElevenLabs usage monitored to prevent overages
+- Time-limited access to prevent abuse after hackathon
+
+## 🏅 Why This Wins
+
+### 🎯 Perfect Challenge Fit
+- **Voice-First**: Primary interface is conversation, not clicks
+- **ElevenLabs + Google AI**: Seamless integration of both required technologies
+- **Real Conversations**: Not just text-to-speech, actual back-and-forth dialog
+- **Practical Application**: Construction safety has immediate ROI
+
+### 💡 Technical Excellence
+- **Simple & Stable**: Clean implementation that works reliably
+- **Mobile-Optimized**: Perfect for construction job sites
+- **Zero Infrastructure**: GitHub Pages hosting = no server complexity
+- **Professional UX**: Matches construction industry expectations
+
+### 🚀 Demo Impact
+- **Immediate Understanding**: Safety problem is universally recognized
+- **Obvious Value**: Voice reporting is clearly better than forms
+- **Judges Can Test**: Public demo with working voice interaction
+- **Memorable**: Real conversation with AI is impressive
+
+## 📋 Submission Details
+
+- **Challenge**: ElevenLabs Challenge - Conversational Voice AI
+- **Repository**: https://github.com/aristidesnakos/incident-reporter
+- **Live Demo**: https://aristidesnakos.github.io/incident-reporter/src/web/
+- **Demo Video**: [YouTube URL - Coming Soon]
+- **License**: MIT (Open Source)
+
+## 🔗 Links
+
+- **Live Application**: https://aristidesnakos.github.io/incident-reporter/src/web/
+- **Source Code**: https://github.com/aristidesnakos/incident-reporter
+- **ElevenLabs**: https://elevenlabs.io/
+- **Google Gemini**: https://deepmind.google/technologies/gemini/
+
+---
+
+**Built for ElevenLabs Challenge 2025** 🎙️ **Voice-First Future** ⚡ **Construction Safety Innovation**
+
+> 🤖 Generated with Claude Code - Co-Authored-By: Claude <noreply@anthropic.com>
