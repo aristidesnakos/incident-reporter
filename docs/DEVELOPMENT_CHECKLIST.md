@@ -14,7 +14,7 @@
 
 ### Final Deliverables (PRIORITY)
 - [x] **Hosted URL**: Deploy to GitHub Pages with time-limited access
-- [ ] **Usage Protection**: Monitor ElevenLabs usage during judging period
+- [x] **Usage Protection**: Monitor ElevenLabs usage during judging period
 - [x] **Open Source License**: Add MIT license file to repository
 - [ ] **Repository Cleanup**: Clear README with setup instructions
 - [ ] **Demo Video**: Record 3-minute demonstration video (USER HANDLES)

@@ -84,13 +84,19 @@ python3 -m http.server 8000
 git clone https://github.com/aristidesnakos/incident-reporter.git
 cd incident-reporter/src/agents
 
+# Install Python dependencies
+pip install -r requirements.txt
+
 # Run setup script
 ./setup_agent.sh
+
+# Create agent with safety manager webhook tool
+python3 create_agent.py
 
 # Follow prompts to:
 # 1. Add your ElevenLabs API key
 # 2. Create new conversational agent
-# 3. Update web/index.html with your agent ID
+# 3. Update src/web/index.html with your agent ID
 ```
 
 ### File Structure
@@ -99,9 +105,13 @@ cd incident-reporter/src/agents
 ├── src/agents/                 # ElevenLabs agent setup
 │   ├── agent_info.json         # Current agent configuration
 │   ├── create_agent.py         # Agent creation script
+│   ├── safety_manager_tool.py  # Webhook tool for Safety Manager notifications
 │   ├── setup_agent.sh          # Automated setup script
 │   └── requirements.txt        # Python dependencies
 ├── docs/                       # Project documentation
+│   ├── DEVELOPMENT_CHECKLIST.md # Technical implementation status
+│   └── SPRINT_PLAN.md          # Sprint goals and timeline
+├── CLAUDE.md                   # Claude Code guidance file
 ├── LICENSE                     # MIT open source license
 └── README.md                   # This file
 ```
@@ -111,8 +121,9 @@ cd incident-reporter/src/agents
 **For Hackathon Judges**: The demo is live and ready for testing!
 
 **Cost Management**: 
-- Demo enabled during judging period only
+- Demo enabled during judging period
 - ElevenLabs usage monitored to prevent overages
+- Webhook integration for Safety Manager notifications
 - Time-limited access to prevent abuse after hackathon
 
 ## 🏅 Why This Wins
@@ -128,6 +139,7 @@ cd incident-reporter/src/agents
 - **Mobile-Optimized**: Perfect for construction job sites
 - **Zero Infrastructure**: GitHub Pages hosting = no server complexity
 - **Professional UX**: Matches construction industry expectations
+- **Webhook Integration**: Safety Manager notification system via webhook tools
 
 ### 🚀 Demo Impact
 - **Immediate Understanding**: Safety problem is universally recognized

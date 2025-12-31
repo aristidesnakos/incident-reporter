@@ -47,26 +47,31 @@ Web Page → ElevenLabs Conversational AI Widget → [Optional: Webhook] → Air
 **Web Development:**
 ```bash
 # Open HTML page in browser
-open /path/to/src/web/index.html
+open src/web/index.html
 
-# Serve locally (optional)
+# Serve locally for HTTPS (required for microphone access)
 python3 -m http.server 8000
 # Then visit http://localhost:8000/src/web/
 ```
 
 **ElevenLabs Agent Setup:**
 ```bash
-# Create conversational AI agent
 cd src/agents
+
+# Install Python dependencies
+pip install -r requirements.txt
+
+# Set up environment and create agent
 ./setup_agent.sh
 python3 create_agent.py
+
+# Agent will output ID to paste into src/web/index.html
 ```
 
-**Optional Webhook Development:**
+**Code Quality:**
 ```bash
-# For data capture integration (if needed)
-cd src/webhook
-python3 app.py  # Simple Flask/FastAPI server
+# No formal linting/testing commands - this is a rapid prototype
+# Manual testing via browser and voice interface
 ```
 
 ## Project Structure
@@ -78,52 +83,52 @@ python3 app.py  # Simple Flask/FastAPI server
 - `/docs/` - Project documentation and sprint planning
 
 **Key Files:**
-- `src/web/index.html` - Main web interface with ElevenLabs widget
-- `src/agents/setup_agent.sh` - ElevenLabs conversational agent setup
-- `src/agents/create_agent.py` - Agent configuration script
+- `src/web/index.html` - Complete web application with embedded ElevenLabs widget
+- `src/agents/create_agent.py` - Agent creation script (creates conversational AI agent)
+- `src/agents/safety_manager_tool.py` - Webhook tool configuration for Safety Manager notifications
+- `src/agents/requirements.txt` - Python dependencies for agent creation
+- `src/agents/setup_agent.sh` - Environment setup script
+- `src/agents/agent_info.json` - Generated agent configuration (after creation)
 
-**Development Process:**
-- ElevenLabs agent created via `./src/agents/setup_agent.sh`
-- Open `src/web/index.html` in browser for immediate voice interface
-- Optional webhook setup for Airtable data capture
-- Airtable serves as ready-made dashboard
+**Current Agent Configuration:**
+- Agent ID: `agent_8401kdqtgnnbfx18q1fv460mh7pv` (configured in index.html)
+- Voice: Rachel (professional, clear)
+- LLM: Google Gemini 2.5 Flash (via ElevenLabs integration)
+- Tools: Safety Manager webhook notification
+
+**Development Workflow:**
+1. Test existing agent via `src/web/index.html` (agent already created)
+2. For new agent: run `./setup_agent.sh` then `python3 create_agent.py` 
+3. Update `agent-id` attribute in `index.html` with new agent ID
+4. Test voice interface through browser (requires microphone permissions)
 
 ## Documentation Discipline
 
 **CRITICAL**: Claude Code must consult and update these documents during development:
 
 ### Before Starting Any Task:
-1. **Read docs/SPRINT_PLAN.md** - Current sprint status, timeline, and priorities
-2. **Read docs/TECHNICAL_SPEC.md** - Architecture and integration requirements  
-3. **Check docs/DEVELOPMENT_CHECKLIST.md** - Technical implementation status
+1. **Read docs/SPRINT_PLAN.md** - Current sprint status, timeline, and priorities  
+2. **Check docs/DEVELOPMENT_CHECKLIST.md** - Technical implementation status
 
 ### During Development:
 - **Update docs/DEVELOPMENT_CHECKLIST.md** immediately after completing technical tasks
 - **Update docs/SPRINT_PLAN.md** progress tracking in real-time
-- **Check docs/PRD.md** for requirements validation when encountering blockers
-
-### After Completing Sprints/Milestones:
-- **Update docs/SPRINT_PLAN.md** with completion status and next priorities
-- **Update docs/TECHNICAL_SPEC.md** if architecture evolves
-- **Update docs/PRD.md** if requirements shift
 
 ### Documentation Commands:
 ```bash
-# Run documentation discipline check before starting work
+# Run documentation discipline check before starting work  
 ./enforce-docs.sh
 
 # Key files to consult in Claude Code:
 read docs/SPRINT_PLAN.md          # Sprint goals and timeline
-read docs/TECHNICAL_SPEC.md       # Architecture and integration requirements  
 read docs/DEVELOPMENT_CHECKLIST.md # Task status and completion tracking
 ```
 
 **Enforcement Script:**
-- Always run `./enforce-docs.sh` before starting development
-- Updates `docs/DEVELOPMENT_CHECKLIST.md` immediately after completing tasks
-- Consult `docs/TECHNICAL_SPEC.md` or `docs/PRD.md` when encountering blockers
+- Always run `./enforce-docs.sh` before starting development (if exists)
+- Update `docs/DEVELOPMENT_CHECKLIST.md` immediately after completing tasks
 
-**Failure to consult docs = incomplete implementation**
+**Note**: This is a hackathon MVP project focused on rapid prototyping with minimal documentation overhead.
 
 ## Testing and Quality
 
@@ -146,4 +151,17 @@ python3 -m http.server 8000
 # Use browser dev tools to check for console errors
 ```
 
-Refer to docs/TECHNICAL_SPEC.md for detailed ElevenLabs agent configurations and widget integration.
+## Important Notes for Claude Code
+
+**Project Status**: This is a completed hackathon submission for the ElevenLabs Challenge. The core functionality is working:
+- Live demo at: https://aristidesnakos.github.io/incident-reporter/src/web/
+- ElevenLabs Conversational AI agent is fully configured and functional
+- Voice-to-voice safety incident reporting works end-to-end
+
+**Development Focus**: Any future development should prioritize:
+1. Testing the existing voice interface 
+2. Understanding the agent configuration in `create_agent.py`
+3. Maintaining the simple, working architecture
+4. Consulting sprint docs before making changes
+
+**Code Quality**: Run Python code through basic linting if modifying agent scripts. The `safety_manager_tool.py` has been formatted to meet line length requirements.
